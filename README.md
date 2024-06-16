@@ -2,8 +2,13 @@
 
 ## Tech
 
-- Tailwind CSS
--
+- Next.js 14
+- Tailwind CSS ([daisyUI](https://daisyui.com/) 매우 유용한 플러그인)
+- Prisma
+
+## VSCode 확장 프로그램
+
+- Tailwind CSS IntelliSense
 
 ### Install Package
 
