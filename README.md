@@ -53,11 +53,11 @@ const Login = (props: Props) => {
 2. Server Action 방식
 
 - click function 내부에 **'use server'** 만 작성해주면, DATA Fetching이 된다. (POST 방식으로)
-- input에서 name이 굉장히 중요하다.
+- ReactJS에서 제공하는 FormData를 사용하기 위해서는 input에서 name이 굉장히 중요하다.
 
 ```bash
 const Login = (props: Props) => {
-  const handleFormSubmit = async () => {
+  const handleFormSubmit = async (formData: FormData) => {
     "use server"; // POST Action이 발생한다.
     console.log("I run in the server");
     console.log(formData.get("email"), formData.get("password")); // route 핸들러로 데이터 전달하기
@@ -81,9 +81,23 @@ const Login = (props: Props) => {
 
 - form action의 작업 상태를 알려주는 hook (ReactJS에서 제공)
 - 다만, Form의 자식 요소, 자식 component에서만 사용할 수가 있다. (Form과 같은 곳에서는 hook을 호출할 수가 없다.)
-- Hook을 사용하는 컴포넌트는 'use client'를 작성해주어야 한다.
+- Hook을 사용하는 컴포넌트는 **'use client'**를 작성해주어야 한다.
 - 사용 예제 : components/form-btn.tsx 파일 참고
 
 ```bash
 const { pending } = useFormStatus();
+```
+
+##### useFormState HOOK
+
+- form action의 결과값을 알기 위해 사용하는 hook (배열을 return)
+- form 의 action을 첫번째 인자로 받고, 두번째 인자로 초기값을 선언해야 한다.
+- dispatch는 useFormState 첫번째 인자의 결과값을 지켜본 후 state에 결과를 담아서 돌려준다.
+- 결과값을 배열로 받는다.
+  - 배열의 첫번째 아이템은 dispatch가 반환하는 값
+  - 배열의 두번째 아이템은 dispatch를 실행하는 트리거 (=FormAction)
+- 이 훅은 action이 return한 새로운 state로 UI가 업데이트 되기를 원하기 때문에 **'use client'**를 작성해주어야 한다. (클라이언트 컴포넌트)
+
+```bash
+const [state, dispatch] = useFormState(FormAction, null);
 ```
