@@ -76,3 +76,14 @@ const Login = (props: Props) => {
   )
 }
 ```
+
+##### useFormStatus HOOK
+
+- form action의 작업 상태를 알려주는 hook (ReactJS에서 제공)
+- 다만, Form의 자식 요소, 자식 component에서만 사용할 수가 있다. (Form과 같은 곳에서는 hook을 호출할 수가 없다.)
+- Hook을 사용하는 컴포넌트는 'use client'를 작성해주어야 한다.
+- 사용 예제 : components/form-btn.tsx 파일 참고
+
+```bash
+const { pending } = useFormStatus();
+```

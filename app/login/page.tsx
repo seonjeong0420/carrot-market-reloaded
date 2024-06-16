@@ -2,6 +2,7 @@ import FormBtn from "@/components/form-btn";
 import FormInput from "@/components/form-input";
 import SocialLogin from "@/components/social-login";
 import React from "react";
+import { useFormStatus } from "react-dom";
 
 type Props = {};
 
@@ -22,8 +23,11 @@ const Login = (props: Props) => {
 
   const handleFormSubmit = async (formData: FormData) => {
     "use server"; // POST Action이 발생한다.
-    console.log("I run in the server");
+    await new Promise((resolve) => {
+      setTimeout(resolve, 5000);
+    });
     console.log(formData.get("email"), formData.get("password"));
+    console.log("Logged IN!!");
   };
 
   return (
@@ -47,7 +51,7 @@ const Login = (props: Props) => {
           placeholder="Password"
           errors={[""]}
         />
-        <FormBtn text="Login" isLoading={false} />
+        <FormBtn text="Login" />
       </form>
       {/* <span onClick={onClickTestPost}>
         <FormBtn text="Login" isLoading={false} />
