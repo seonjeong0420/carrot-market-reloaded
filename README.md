@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Carrot Market Reloaded
 
-## Getting Started
+## 기술 스택
 
-First, run the development server:
+- Next.js 14
+- Prisma
+- Tailwind css ([daisyUI](https://daisyui.com/) 매우 유용한 플러그인)
+-
+
+### VSCode 확장 프로그램
+
+- Tailwind CSS IntelliSense
+
+## TailwindCSS
+
+### tailwind.config.ts
+
+theme를 통해 css 속성을 추가 커스텀 할 수가 있고, 서버 재구동 없이 바로 compiler 자동완성 기능으로 사용할 수가 있다.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+const config: Config = {
+  content: [
+    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./app/**/*.{js,ts,jsx,tsx,mdx}",
+  ],
+  theme: {
+    margin: {
+      'tomato': '120px'
+    },
+    borderRadius: {
+      'radius-point': '11.11px'
+    }
+  },
+  plugins: [],
+};
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### globlas.css
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- @tailwind base;
+  - reset css 역할과 동일
+- @tailwind components;
+- @tailwind utilities;
+  - className에 사용한 css를 정의
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### 스타일 컴포넌트
 
-## Learn More
+css 파일 내 클래스 네임 정의 후 **@apply** 선언 후에 클래스 작성하면 된다.
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+@layer base {
+  a {
+    @apply text-blue-500;
+  }
+}
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+/* 컴포넌트 추상화 하는 방법 */
+@layer components {
+  .btn {
+    @apply bg-gradient-to-tr from-cyan-500 via-blue-300 to-purple-400 text-white py-2 rounded-full transition-transform font-medium active:scale-90 focus:scale-90 peer-required:bg-green-500;
+  }
+}
+```
