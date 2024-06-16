@@ -15,24 +15,33 @@ const CreateAccount = (props: Props) => {
       <form className="flex flex-col gap-3 ">
         <FormInput
           type="text"
-          isRequired
+          name="username"
           placeholder="Username"
+          isRequired
           errors={["username is too short"]}
         />
-        <FormInput type="email" isRequired placeholder="Email" errors={[""]} />
+        <FormInput
+          type="email"
+          name="email"
+          isRequired
+          placeholder="Email"
+          errors={[""]}
+        />
         <FormInput
           type="password"
+          name="paasword"
           isRequired
           placeholder="Password"
           errors={[""]}
         />
         <FormInput
           type="password"
+          name="confirmPW"
           isRequired
           placeholder="Confirm Password"
           errors={[""]}
         />
-        <FormBtn text="Create Account" isLoading={false} />
+        <FormBtn text="Create Account" />
       </form>
       <SocialLogin />
     </div>

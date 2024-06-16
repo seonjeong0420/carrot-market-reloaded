@@ -1,8 +1,11 @@
+"use client";
 import FormBtn from "@/components/form-btn";
 import FormInput from "@/components/form-input";
 import SocialLogin from "@/components/social-login";
+import { redirect } from "next/navigation";
 import React from "react";
-import { useFormStatus } from "react-dom";
+import { useFormState, useFormStatus } from "react-dom";
+import { handleFormSubmit } from "./actions";
 
 type Props = {};
 
@@ -21,14 +24,13 @@ const Login = (props: Props) => {
     console.log(await response.json());
   }; */
 
-  const handleFormSubmit = async (formData: FormData) => {
-    "use server"; // POST Action이 발생한다.
-    await new Promise((resolve) => {
-      setTimeout(resolve, 5000);
-    });
-    console.log(formData.get("email"), formData.get("password"));
-    console.log("Logged IN!!");
-  };
+  /**
+   * useFormState Hook
+   * 결과를 앍로 싶은 action을 인자로 넘겨주어야 하고, 초기값을 설정해주어야 한다.
+   * state : action의 return 값
+   * dispatch : action을 실행시킨다. (현 예제에서는 handleFormSubmit을 실행시킨다.)
+   */
+  const [state, dispatch] = useFormState(handleFormSubmit, null);
 
   return (
     <div className="flex flex-col gap-10 py-8 px-6">
@@ -36,7 +38,7 @@ const Login = (props: Props) => {
         <h1 className="text-2xl ">안녕하세요!</h1>
         <h2 className="text-xl">Login with eamil and password!</h2>
       </div>
-      <form className="flex flex-col gap-3" action={handleFormSubmit}>
+      <form className="flex flex-col gap-3" action={dispatch}>
         <FormInput
           type="email"
           name="email"
@@ -49,7 +51,7 @@ const Login = (props: Props) => {
           name="password"
           isRequired
           placeholder="Password"
-          errors={[""]}
+          errors={state?.errors ?? []}
         />
         <FormBtn text="Login" />
       </form>
