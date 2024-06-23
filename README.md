@@ -15,6 +15,8 @@
 - npm install @heroicons/react
   - [Document][https://github.com/tailwindlabs/heroicons]
 - npm install @tailwindcss/forms
+- npm install Zod
+  - 유효성 검사 라이브러리
 
 ### NextJS
 

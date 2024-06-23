@@ -5,7 +5,7 @@ interface FormInputProps {
   name: string;
   placeholder: string;
   isRequired: boolean;
-  errors: string[];
+  errors?: string[];
 }
 
 const FormInput = ({
@@ -24,7 +24,7 @@ const FormInput = ({
         placeholder={placeholder}
         required={isRequired}
       />
-      {errors.map((error, index) => (
+      {errors?.map((error, index) => (
         <span key={index} className="text-red-500 font-medium ">
           {error}
         </span>
