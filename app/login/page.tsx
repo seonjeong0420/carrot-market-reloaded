@@ -1,6 +1,6 @@
 "use client";
-import FormBtn from "@/components/form-btn";
-import FormInput from "@/components/form-input";
+import Button from "@/components/Button";
+import FormInput from "@/components/input";
 import SocialLogin from "@/components/social-login";
 import { redirect } from "next/navigation";
 import React from "react";
@@ -53,10 +53,10 @@ const Login = (props: Props) => {
           placeholder="Password"
           errors={state?.errors ?? []}
         />
-        <FormBtn text="Login" />
+        <Button text="Login" />
       </form>
       {/* <span onClick={onClickTestPost}>
-        <FormBtn text="Login" isLoading={false} />
+        <Button text="Login" isLoading={false} />
       </span> */}
       <SocialLogin />
     </div>

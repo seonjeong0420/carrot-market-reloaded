@@ -2,11 +2,11 @@
 import React from "react";
 import { useFormStatus } from "react-dom";
 
-interface FormButtonProps {
+interface ButtonProps {
   text: string;
 }
 
-const FormBtn = ({ text }: FormButtonProps) => {
+const Button = ({ text }: ButtonProps) => {
   const { pending } = useFormStatus();
 
   return (
@@ -19,4 +19,4 @@ const FormBtn = ({ text }: FormButtonProps) => {
   );
 };
 
-export default FormBtn;
+export default Button;
