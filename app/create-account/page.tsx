@@ -22,19 +22,28 @@ const CreateAccount = (props: Props) => {
           name="username"
           placeholder="Username"
           isRequired
+          errors={state?.fieldErrors.username}
         />
-        <FormInput type="email" name="email" isRequired placeholder="Email" />
+        <FormInput
+          type="email"
+          name="email"
+          isRequired
+          placeholder="Email"
+          errors={state?.fieldErrors.email}
+        />
         <FormInput
           type="password"
           name="paasword"
           isRequired
           placeholder="Password"
+          errors={state?.fieldErrors.password}
         />
         <FormInput
           type="password"
           name="confirmPW"
           isRequired
           placeholder="Confirm Password"
+          errors={state?.fieldErrors.confirmPW}
         />
         <FormBtn text="Create Account" />
       </form>
