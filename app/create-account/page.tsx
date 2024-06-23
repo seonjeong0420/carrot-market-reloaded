@@ -33,7 +33,7 @@ const CreateAccount = (props: Props) => {
         />
         <FormInput
           type="password"
-          name="paasword"
+          name="password"
           isRequired
           placeholder="Password"
           errors={state?.fieldErrors.password}

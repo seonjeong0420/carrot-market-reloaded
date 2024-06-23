@@ -1,6 +1,10 @@
 "use server";
 import { z } from "zod";
 
+const passwordRegex = new RegExp(
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*?[#?!@$%^&*-]).+$/
+);
+
 // username validation check
 const checkUsername = (username: string) => {
   // return username.includes("tomato") ? false : true;
@@ -29,10 +33,19 @@ const formSchema = z
       })
       .min(3, "way too short")
       .max(10, "that is to loong")
+      .toLowerCase()
+      .trim()
+      .transform((username) => `🔥${username}🔥`) // transform은 무조건 return이 있어야 한다.
       .refine(checkUsername, "no tomato alllowed."),
     email: z.string().email(),
-    password: z.string().min(10),
-    confirmPW: z.string().min(10),
+    password: z
+      .string()
+      .min(4)
+      .regex(
+        passwordRegex,
+        "Passwords must contain at least one UPPERCASE, lowercase, number and special characters #?!@$%^&*-"
+      ),
+    confirmPW: z.string().min(4),
   })
   .refine(checkPassword, {
     message: "Both paswords should be the same.",
@@ -43,13 +56,15 @@ export async function createAccount(prevState: any, formData: FormData) {
   const data = {
     username: formData.get("username"),
     email: formData.get("email"),
-    paasword: formData.get("paasword"),
+    password: formData.get("password"),
     confirmPW: formData.get("confirmPW"),
   };
 
   const result = formSchema.safeParse(data);
   if (!result.success) {
     return result.error.flatten();
+  } else {
+    console.log(result.data);
   }
 
   /**
