@@ -27,8 +27,9 @@
 - npm i --save-dev @types/validator
 - npm i prisma
 - npx prisma init
-- npx prisma migrate dev
-  - add_user 작성 후 enter
+
+1.  npx prisma migrate dev (-> add_user 작성 후 enter)
+2.  npx prisma studio
 
 ### NextJS
 
@@ -177,6 +178,15 @@ model User {
 
 4. npx prisma migrate dev -> add_user 입력 후 enter
 5. prisma 폴더에 migrations와 database.db 파일 자동 생성
+
+**Prisma 사용 방법**
+
+- schema.prisma 파일을 변경하고 싶다면, schema.prisma의 새로운 컬럼이나, model을 추가/수정하고 나서 migrate 해야 한다. 그리고 변경사항을 studio에 반영하고 싶다면, **studio를 재시작** 해주어야 한다.
+
+1.  npx prisma migrate dev (-> 변경사항이 있는 database 작성 후 enter)
+2.  npx prisma studio
+
+**Prisma 쿼리 작성 방법**
 
 - database의 username에서 'dbdb'를 갖고 있는 쿼리 find
 

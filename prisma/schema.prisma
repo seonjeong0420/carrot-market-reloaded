@@ -19,3 +19,4 @@ model User {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt // 사용자의 수정이 있을 때마다 시간 저장
 }
+
