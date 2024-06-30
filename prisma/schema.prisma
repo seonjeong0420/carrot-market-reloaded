@@ -7,3 +7,15 @@ datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id Int @id @default(autoincrement()) // 첫번째 사용자의 id는 자동으로 1 설정
+  username String @unique
+  email String? @unique // sms으로 로그인 할 수도 있기 때문에 선택값
+  password String? // sms으로 로그인 할 수도 있기 때문에 선택값
+  phone String? @unique
+  github_id String? @unique
+  avatar String? @default("http://dkdkdkdkdk.com/dldl.jpg")
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt // 사용자의 수정이 있을 때마다 시간 저장
+}

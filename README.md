@@ -4,7 +4,8 @@
 
 - Next.js 14
 - Tailwind CSS ([daisyUI](https://daisyui.com/) 매우 유용한 플러그인)
-- ## Prisma
+- Prisma
+  - .env 파일을 .gitignore에 넣는게 가장 중요하다
 - Zod
   - coerce(=강제) : user가 입력한 string을 number로 변환을 시도
 
@@ -12,6 +13,7 @@
 
 - Tailwind CSS IntelliSense
 - Prisma
+- SQLite
 
 ### Install Package
 
@@ -25,6 +27,8 @@
 - npm i --save-dev @types/validator
 - npm i prisma
 - npx prisma init
+- npx prisma migrate dev
+  - add_user 작성 후 enter
 
 ### NextJS
 
