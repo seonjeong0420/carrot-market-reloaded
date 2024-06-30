@@ -4,7 +4,8 @@ import Input from "@/components/input";
 import SocialLogin from "@/components/social-login";
 import { useFormState } from "react-dom";
 import { createAccount } from "./actions";
-import Button from "@/components/Button";
+import { PASSWORD_MIN_LENNGTH } from "../lib/constans";
+import Button from "@/components/button";
 
 type Props = {};
 
@@ -23,8 +24,6 @@ const CreateAccount = (props: Props) => {
           placeholder="Username"
           isRequired
           errors={state?.fieldErrors.username}
-          minLength={3}
-          maxLength={4}
         />
         <Input
           type="email"
@@ -39,7 +38,7 @@ const CreateAccount = (props: Props) => {
           isRequired
           placeholder="Password"
           errors={state?.fieldErrors.password}
-          minLength={4}
+          minLength={PASSWORD_MIN_LENNGTH}
         />
         <Input
           type="password"
@@ -47,7 +46,7 @@ const CreateAccount = (props: Props) => {
           isRequired
           placeholder="Confirm Password"
           errors={state?.fieldErrors.confirmPW}
-          minLength={4}
+          minLength={PASSWORD_MIN_LENNGTH}
         />
         <Button text="Create Account" />
       </form>

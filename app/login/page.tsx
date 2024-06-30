@@ -1,11 +1,12 @@
 "use client";
-import Button from "@/components/Button";
 import FormInput from "@/components/input";
 import SocialLogin from "@/components/social-login";
 import { redirect } from "next/navigation";
 import React from "react";
 import { useFormState, useFormStatus } from "react-dom";
-import { handleFormSubmit } from "./actions";
+import { login } from "./actions";
+import { PASSWORD_MIN_LENNGTH } from "../lib/constans";
+import Button from "@/components/button";
 
 type Props = {};
 
@@ -26,11 +27,11 @@ const Login = (props: Props) => {
 
   /**
    * useFormState Hook
-   * 결과를 앍로 싶은 action을 인자로 넘겨주어야 하고, 초기값을 설정해주어야 한다.
+   * 결과를 알고 싶은 action을 인자로 넘겨주어야 하고, 초기값을 설정해주어야 한다.
    * state : action의 return 값
    * dispatch : action을 실행시킨다. (현 예제에서는 handleFormSubmit을 실행시킨다.)
    */
-  const [state, dispatch] = useFormState(handleFormSubmit, null);
+  const [state, dispatch] = useFormState(login, null);
 
   return (
     <div className="flex flex-col gap-10 py-8 px-6">
@@ -44,14 +45,15 @@ const Login = (props: Props) => {
           name="email"
           isRequired
           placeholder="Email"
-          errors={[""]}
+          errors={state?.fieldErrors.email}
         />
         <FormInput
           type="password"
           name="password"
           isRequired
           placeholder="Password"
-          errors={state?.errors ?? []}
+          minLength={PASSWORD_MIN_LENNGTH}
+          errors={state?.fieldErrors.password}
         />
         <Button text="Login" />
       </form>

@@ -1,5 +1,10 @@
 "use server";
 import { z } from "zod";
+import {
+  PASSWORD_MIN_LENNGTH,
+  PASSWORD_REGEX,
+  PASSWORD_REGEX_ERROR,
+} from "../lib/constans";
 
 const passwordRegex = new RegExp(
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*?[#?!@$%^&*-]).+$/
@@ -31,8 +36,6 @@ const formSchema = z
         invalid_type_error: "username must be a string.",
         required_error: "where is my username?",
       })
-      .min(3, "way too short")
-      .max(10, "that is to loong")
       .toLowerCase()
       .trim()
       .transform((username) => `🔥${username}🔥`) // transform은 무조건 return이 있어야 한다.
@@ -40,12 +43,9 @@ const formSchema = z
     email: z.string().email(),
     password: z
       .string()
-      .min(4)
-      .regex(
-        passwordRegex,
-        "Passwords must contain at least one UPPERCASE, lowercase, number and special characters #?!@$%^&*-"
-      ),
-    confirmPW: z.string().min(4),
+      .min(PASSWORD_MIN_LENNGTH)
+      .regex(PASSWORD_REGEX, PASSWORD_REGEX_ERROR),
+    confirmPW: z.string().min(PASSWORD_MIN_LENNGTH),
   })
   .refine(checkPassword, {
     message: "Both paswords should be the same.",
