@@ -145,3 +145,58 @@ const phoneSchema = z.string().trim().refine(validator.isMobilePhone, "ko-KR"); 
 ```bash
   username: z.string().min(3).max(10).optional,
 ```
+
+### Prisma
+
+ORM으로 객체를 schema로 정의한 후에 그 객체와 내가 선택한 database를 연결해주는 매개체
+개발자가 쉽게 데이터베이스를 조작할 수 있도록 도와준다.
+
+1. npm install prisma하면, .env & prisma 폴더가 자동으로 생성
+2. .env 파일 내부 컨텐츠 수정 **DATABASE_URL="file:./database.db"**
+3. prisma/schema.prisma 컨텐츠의 datasource db - provider 내용 수정 및 model User 추가
+
+```bash
+// sqlite : 프로젝트 내부에 database 파일 갖고 있으면 된다.
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id Int @id @default(autoincrement()) // 첫번째 사용자의 id는 자동으로 1 설정
+  username String @unique
+  email String? @unique // sms으로 로그인 할 수도 있기 때문에 선택값
+  password String? // sms으로 로그인 할 수도 있기 때문에 선택값
+  phone String? @unique
+  github_id String? @unique
+  avatar String? @default("http://dkdkdkdkdk.com/dldl.jpg")
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt // 사용자의 수정이 있을 때마다 시간 저장
+}
+```
+
+4. npx prisma migrate dev -> add_user 입력 후 enter
+5. prisma 폴더에 migrations와 database.db 파일 자동 생성
+
+- database의 username에서 'dbdb'를 갖고 있는 쿼리 find
+
+```bash
+import { PrismaClient } from "@prisma/client";
+
+const db = new PrismaClient();
+const test = async () => {
+  const user = await db.user.findMany({
+    where: {
+      username: {
+        contains: "dbdb",
+      },
+    },
+  });
+  console.log(user);
+};
+
+test();
+
+export default db;
+
+```
