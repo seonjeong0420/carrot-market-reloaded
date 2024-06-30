@@ -149,7 +149,7 @@ const phoneSchema = z.string().trim().refine(validator.isMobilePhone, "ko-KR"); 
 ### Prisma
 
 ORM으로 객체를 schema로 정의한 후에 그 객체와 내가 선택한 database를 연결해주는 매개체
-개발자가 쉽게 데이터베이스를 조작할 수 있도록 도와준다.
+개발자가 타입스크립트를 사용하여 쉽게 데이터베이스를 조작할 수 있도록 도와준다.
 
 1. npm install prisma하면, .env & prisma 폴더가 자동으로 생성
 2. .env 파일 내부 컨텐츠 수정 **DATABASE_URL="file:./database.db"**
