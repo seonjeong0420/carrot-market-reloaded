@@ -1,0 +1,9 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+// sqlite : 프로젝트 내부에 database 파일 갖고 있으면 된다.
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}

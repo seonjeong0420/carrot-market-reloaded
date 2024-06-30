@@ -4,13 +4,14 @@
 
 - Next.js 14
 - Tailwind CSS ([daisyUI](https://daisyui.com/) 매우 유용한 플러그인)
-- Prisma
+- ## Prisma
 - Zod
   - coerce(=강제) : user가 입력한 string을 number로 변환을 시도
 
 ## VSCode 확장 프로그램
 
 - Tailwind CSS IntelliSense
+- Prisma
 
 ### Install Package
 
@@ -22,6 +23,8 @@
 - npm install validator
   - 수많은 validator를 모아놓은 라이브러리
 - npm i --save-dev @types/validator
+- npm i prisma
+- npx prisma init
 
 ### NextJS
 
