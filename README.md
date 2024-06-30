@@ -6,6 +6,7 @@
 - Tailwind CSS ([daisyUI](https://daisyui.com/) 매우 유용한 플러그인)
 - Prisma
 - Zod
+  - coerce(=강제) : user가 입력한 string을 number로 변환을 시도
 
 ## VSCode 확장 프로그램
 
@@ -18,6 +19,9 @@
 - npm install @tailwindcss/forms
 - npm install Zod
   - 유효성 검사 라이브러리
+- npm install validator
+  - 수많은 validator를 모아놓은 라이브러리
+- npm i --save-dev @types/validator
 
 ### NextJS
 
@@ -103,4 +107,34 @@ const { pending } = useFormStatus();
 
 ```bash
 const [state, dispatch] = useFormState(FormAction, null);
+```
+
+### Zod
+
+object로 데이터를 검증할 경우, errors 결과를 fieldErrors로 받아올 수가 있다.
+
+1. 필수 사용
+
+- transform : 무조건 return이 있어야 한다.
+- refine() : object 안에 있는 데이터를 validation 체크하고 싶을 때 사용
+
+```bash
+import { z } from "zod";
+
+z.object({
+  username: z.string().trim().transform((username) => `🔥${username}🔥`).refine(checkUsername, "no tomato alllowed."),
+  password: z.string().min(PASSWORD_MIN_LENNGTH).regex(PASSWORD_REGEX, PASSWORD_REGEX_ERROR),
+  email: z.string().email()
+})
+
+const phoneSchema = z.string().trim().refine(validator.isMobilePhone, "ko-KR"); //한국 전화번호만 받게 하고 싶은 경우
+
+```
+
+2. 선택적 사용
+
+- 필수이 아닌 경우 optional을 사용하면 된다.
+
+```bash
+  username: z.string().min(3).max(10).optional,
 ```
