@@ -60,9 +60,9 @@ export async function createAccount(prevState: any, formData: FormData) {
     confirmPW: formData.get("confirmPW"),
   };
 
-  const result = formSchema.safeParse(data);
+  const result = formSchema.safeParse(data); // .parse 대신에 safeParse 사용 -> 데이터를 검증하는건 둘 다 동일하지만, validation에 관한 정보가 담긴 object 를 return 한다.
   if (!result.success) {
-    return result.error.flatten();
+    return result.error.flatten(); // flatten() : 에러를 명확하게 object로 표현해준다.
   } else {
     console.log(result.data);
   }

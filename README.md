@@ -5,6 +5,7 @@
 - Next.js 14
 - Tailwind CSS ([daisyUI](https://daisyui.com/) 매우 유용한 플러그인)
 - Prisma
+- Zod
 
 ## VSCode 확장 프로그램
 
@@ -28,7 +29,7 @@
 
 1. Server Action 방식이 나오기 이전에 사용하던 Router Handler 방식
 
-- useState, useEffect, onChange 등 여러 hook 사용 필요
+- useState, useEffect, onCh ange 등 여러 hook 사용 필요
 
 ```bash
 const Login = (props: Props) => {
