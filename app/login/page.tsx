@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import React from "react";
 import { useFormState, useFormStatus } from "react-dom";
 import { login } from "./actions";
-import { PASSWORD_MIN_LENNGTH } from "../lib/constans";
+import { PASSWORD_MIN_LENNGTH } from "@/lib/constans";
 import Button from "@/components/button";
 
 type Props = {};

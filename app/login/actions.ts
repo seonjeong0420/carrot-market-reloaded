@@ -5,7 +5,7 @@ import {
   PASSWORD_MIN_LENNGTH,
   PASSWORD_REGEX,
   PASSWORD_REGEX_ERROR,
-} from "../lib/constans";
+} from "@/lib/constans";
 
 /**
  * login page는 클라이언트 컴포넌트이므로, 'use server' 사용이 불가능 하다.

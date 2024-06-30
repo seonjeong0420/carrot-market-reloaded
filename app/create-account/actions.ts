@@ -4,7 +4,7 @@ import {
   PASSWORD_MIN_LENNGTH,
   PASSWORD_REGEX,
   PASSWORD_REGEX_ERROR,
-} from "../lib/constans";
+} from "@/lib/constans";
 
 const passwordRegex = new RegExp(
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*?[#?!@$%^&*-]).+$/

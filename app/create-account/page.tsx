@@ -4,7 +4,7 @@ import Input from "@/components/input";
 import SocialLogin from "@/components/social-login";
 import { useFormState } from "react-dom";
 import { createAccount } from "./actions";
-import { PASSWORD_MIN_LENNGTH } from "../lib/constans";
+import { PASSWORD_MIN_LENNGTH } from "@/lib/constans";
 import Button from "@/components/button";
 
 type Props = {};
