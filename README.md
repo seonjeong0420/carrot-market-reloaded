@@ -130,6 +130,7 @@ object로 데이터를 검증할 경우, errors 결과를 fieldErrors로 받아�
 
 - transform : 무조건 return이 있어야 한다.
 - refine() : object 안에 있는 데이터를 validation 체크하고 싶을 때 사용
+- superRefine() : superRefine()에 정의된 validation 외에 다른 refine 실행되지 않는다.
 
 ```bash
 import { z } from "zod";

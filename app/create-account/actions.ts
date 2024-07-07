@@ -22,35 +22,35 @@ const checkUsername = async (username: string) => {
   return !username.includes("tomato");
 };
 
-const checkUniqueUsername = async (username: string) => {
-  const user = await db.user.findUnique({
-    where: {
-      username,
-    },
-    select: {
-      // database에게 user 데이터를 찾지만, id 값만 전달해달라고 요청하는 것
-      id: true,
-    },
-  });
-  // if (user) {
-  //   return false;
-  // } else {
-  //   return true;
-  // }
-  return !Boolean(user);
-};
+// const checkUniqueUsername = async (username: string) => {
+//   const user = await db.user.findUnique({
+//     where: {
+//       username,
+//     },
+//     select: {
+//       // database에게 user 데이터를 찾지만, id 값만 전달해달라고 요청하는 것
+//       id: true,
+//     },
+//   });
+//   // if (user) {
+//   //   return false;
+//   // } else {
+//   //   return true;
+//   // }
+//   return !Boolean(user);
+// };
 
-const checkUniqueEmail = async (email: string) => {
-  const userEmail = await db.user.findUnique({
-    where: {
-      email,
-    },
-    select: {
-      id: true,
-    },
-  });
-  return Boolean(userEmail) === false;
-};
+// const checkUniqueEmail = async (email: string) => {
+//   const userEmail = await db.user.findUnique({
+//     where: {
+//       email,
+//     },
+//     select: {
+//       id: true,
+//     },
+//   });
+//   return Boolean(userEmail) === false;
+// };
 
 // password, confirmPW 같은지 check
 const checkPassword = ({
@@ -75,20 +75,58 @@ const formSchema = z
       .toLowerCase()
       .trim()
       .transform((username) => `🔥${username}🔥`) // transform은 무조건 return이 있어야 한다.
-      .refine(checkUsername, "no tomato alllowed.")
-      .refine(checkUniqueUsername, "This uername is already taken"),
-    email: z
-      .string()
-      .email()
-      .refine(
-        checkUniqueEmail,
-        "There is an account already registered with that email"
-      ),
+      .refine(checkUsername, "no tomato alllowed."),
+    // .refine(checkUniqueUsername, "This uername is already taken"),
+    email: z.string().email(),
+    // .refine(
+    //   checkUniqueEmail,
+    //   "There is an account already registered with that email"
+    // ),
     password: z
       .string()
       .min(PASSWORD_MIN_LENNGTH)
       .regex(PASSWORD_REGEX, PASSWORD_REGEX_ERROR),
     confirmPW: z.string().min(PASSWORD_MIN_LENNGTH),
+  })
+  .superRefine(async ({ username }, ctx) => {
+    const user = await db.user.findUnique({
+      where: {
+        username,
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    if (user) {
+      ctx.addIssue({
+        code: "custom",
+        message: "this username is already taken",
+        path: ["username"], // fieldErrors 폴더에서 에러 발생하게 만들기
+        fatal: true,
+      });
+      return z.NEVER;
+    }
+  })
+  .superRefine(async ({ email }, ctx) => {
+    const user = await db.user.findUnique({
+      where: {
+        email,
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    if (user) {
+      ctx.addIssue({
+        code: "custom",
+        message: "There is an account already registered with that email",
+        path: ["email"], // fieldErrors 폴더에서 에러 발생하게 만들기
+        fatal: true,
+      });
+      return z.NEVER;
+    }
   })
   .refine(checkPassword, {
     message: "Both paswords should be the same.",
