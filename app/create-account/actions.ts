@@ -1,5 +1,6 @@
 "use server";
 import { z } from "zod";
+import bcrypt from "bcrypt";
 import {
   PASSWORD_MIN_LENNGTH,
   PASSWORD_REGEX,
@@ -104,8 +105,22 @@ export async function createAccount(prevState: any, formData: FormData) {
   } else {
     // 1. check username, email -> zod에서 refine으로 정합성 check (checkUniqueUsername & checkUniqueEmail)
     // 2. hash password
+    const hashedPasswrd = await bcrypt.hash(result.data.password, 12); // 12 : 알고리즘을 얼마나 실행할 지 결정하는 것
+
     // 3. save the user to db
-    // 4. log the user in & redirect /home
+    const user = await db.user.create({
+      data: {
+        username: result.data.username,
+        email: result.data.email,
+        password: hashedPasswrd,
+      },
+      select: {
+        id: true,
+      },
+    });
+    // 4. log the user in
+
+    // 5. redirect /home
   }
 
   /**

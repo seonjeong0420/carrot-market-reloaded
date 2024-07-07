@@ -31,6 +31,10 @@
 1.  npx prisma migrate dev (-> add_user 작성 후 enter)
 2.  npx prisma studio
 
+- npm i bcrypt
+  - 비밀번호를 hashing 할 수 있게 해주는 패키지
+- npm i @types/bcrypt
+
 ### NextJS
 
 #### Server Action - api/route.ts
@@ -210,3 +214,6 @@ test();
 export default db;
 
 ```
+
+**Password 해싱**
+해싱 : 기본적으로 유저가 보낸 비밀번호를 변환하는 것 (암호화, 단방향)
