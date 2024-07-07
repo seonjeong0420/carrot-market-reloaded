@@ -1,6 +1,6 @@
 import db from "@/lib/db";
 import getSession from "@/lib/session";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import React from "react";
 
 type Props = {};
@@ -13,11 +13,14 @@ async function getUser() {
         id: session.id,
       },
     });
-    return user;
+    if (user) {
+      return user;
+    }
   }
+  notFound();
 }
 
-const page = async (props: Props) => {
+const Profile = async (props: Props) => {
   const user = await getUser();
   const handleLogout = async () => {
     "use server";
@@ -35,4 +38,4 @@ const page = async (props: Props) => {
   );
 };
 
-export default page;
+export default Profile;
