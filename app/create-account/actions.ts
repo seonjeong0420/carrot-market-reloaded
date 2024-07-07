@@ -5,15 +5,46 @@ import {
   PASSWORD_REGEX,
   PASSWORD_REGEX_ERROR,
 } from "@/lib/constans";
+import db from "@/lib/db";
 
 const passwordRegex = new RegExp(
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*?[#?!@$%^&*-]).+$/
 );
 
 // username validation check
-const checkUsername = (username: string) => {
+const checkUsername = async (username: string) => {
   // return username.includes("tomato") ? false : true;
   return !username.includes("tomato");
+};
+
+const checkUniqueUsername = async (username: string) => {
+  const user = await db.user.findUnique({
+    where: {
+      username,
+    },
+    select: {
+      // database에게 user 데이터를 찾지만, id 값만 전달해달라고 요청하는 것
+      id: true,
+    },
+  });
+  // if (user) {
+  //   return false;
+  // } else {
+  //   return true;
+  // }
+  return !Boolean(user);
+};
+
+const checkUniqueEmail = async (email: string) => {
+  const userEmail = await db.user.findUnique({
+    where: {
+      email,
+    },
+    select: {
+      id: true,
+    },
+  });
+  return Boolean(userEmail) === false;
 };
 
 // password, confirmPW 같은지 check
@@ -39,8 +70,15 @@ const formSchema = z
       .toLowerCase()
       .trim()
       .transform((username) => `🔥${username}🔥`) // transform은 무조건 return이 있어야 한다.
-      .refine(checkUsername, "no tomato alllowed."),
-    email: z.string().email(),
+      .refine(checkUsername, "no tomato alllowed.")
+      .refine(checkUniqueUsername, "This uername is already taken"),
+    email: z
+      .string()
+      .email()
+      .refine(
+        checkUniqueEmail,
+        "There is an account already registered with that email"
+      ),
     password: z
       .string()
       .min(PASSWORD_MIN_LENNGTH)
@@ -60,11 +98,14 @@ export async function createAccount(prevState: any, formData: FormData) {
     confirmPW: formData.get("confirmPW"),
   };
 
-  const result = formSchema.safeParse(data); // .parse 대신에 safeParse 사용 -> 데이터를 검증하는건 둘 다 동일하지만, validation에 관한 정보가 담긴 object 를 return 한다.
+  const result = await formSchema.safeParseAsync(data); // .parse 대신에 safeParse 사용 -> 데이터를 검증하는건 둘 다 동일하지만, validation에 관한 정보가 담긴 object 를 return 한다.
   if (!result.success) {
     return result.error.flatten(); // flatten() : 에러를 명확하게 object로 표현해준다.
   } else {
-    console.log(result.data);
+    // 1. check username, email -> zod에서 refine으로 정합성 check (checkUniqueUsername & checkUniqueEmail)
+    // 2. hash password
+    // 3. save the user to db
+    // 4. log the user in & redirect /home
   }
 
   /**
