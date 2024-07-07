@@ -14,7 +14,7 @@ const test = async () => {
     },
   });
 
-  console.log(token);
+  // console.log(token);
 };
 
 test();

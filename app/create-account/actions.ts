@@ -10,6 +10,7 @@ import db from "@/lib/db";
 import { getIronSession } from "iron-session";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import getSession from "@/lib/session";
 
 const passwordRegex = new RegExp(
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*?[#?!@$%^&*-]).+$/
@@ -123,12 +124,7 @@ export async function createAccount(prevState: any, formData: FormData) {
     });
 
     // 4. log the user in
-    const session = await getIronSession(cookies(), {
-      cookieName: "dellicious-karrot",
-      password: process.env.COOKIE_PASSWORD!, // 보안을 위해 env 파일애서 import 함
-    });
-
-    // @ts-ignore
+    const session = await getSession();
     session.id = user.id;
     await session.save();
 

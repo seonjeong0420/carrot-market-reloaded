@@ -35,7 +35,6 @@
   - 비밀번호를 hashing 할 수 있게 해주는 패키지
 - npm i @types/bcrypt
 - npm i iron-session
-  -
 
 ### NextJS
 

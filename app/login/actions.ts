@@ -6,6 +6,10 @@ import {
   PASSWORD_REGEX,
   PASSWORD_REGEX_ERROR,
 } from "@/lib/constans";
+import db from "@/lib/db";
+import bcrypt from "bcrypt";
+import getSession from "@/lib/session";
+import { redirect } from "next/navigation";
 
 /**
  * login page는 클라이언트 컴포넌트이므로, 'use server' 사용이 불가능 하다.
@@ -17,8 +21,25 @@ export const login = async (prevData: any, formData: FormData) => {
     password: formData.get("password"),
   };
 
+  const checkEmailExists = async (email: string) => {
+    const user = await db.user.findUnique({
+      where: {
+        email,
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    return Boolean(user);
+  };
+
   const loginFormSchema = z.object({
-    email: z.string().email().toLowerCase(),
+    email: z
+      .string()
+      .email()
+      .toLowerCase()
+      .refine(checkEmailExists, "An account with this email dost not exist"),
     password: z
       .string({
         required_error: "Password is Required",
@@ -32,11 +53,38 @@ export const login = async (prevData: any, formData: FormData) => {
   // });
   // redirect("/"); -> 로그인 성공 이후 다른 페이지로 redirect 시키는 방법
 
-  const result = loginFormSchema.safeParse(data);
+  const result = await loginFormSchema.safeParseAsync(data);
   if (!result.success) {
     return result.error.flatten();
   } else {
-    console.log(result.data);
+    // console.log(result.data);
+    // 1. find user sith the email -> checkEmailExists (zod 활용)
+    // 2. if the user is found, check password hash
+    const user = await db.user.findUnique({
+      where: {
+        email: result.data.email,
+      },
+      select: {
+        id: true,
+        password: true,
+      },
+    });
+    const ok = await bcrypt.compare(result.data.password, user!.password ?? ""); // Password가 null 이라면, 빈 값과 비교하겠다 라는 의미
+    if (ok) {
+      const session = await getSession();
+      session.id = user!.id;
+      redirect("/profile");
+    } else {
+      return {
+        fieldErrors: {
+          password: ["Wrong Password"],
+          email: [""],
+        },
+      };
+    }
+
+    // 3. log the user in
+    // 4. redirect '/profile'
   }
   // return {
   //   errors: ["wrong password", "password is too short"],
