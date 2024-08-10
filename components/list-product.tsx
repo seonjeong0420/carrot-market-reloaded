@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { formatToWon } from "@/lib/utils";
 
 interface ListProductProps {
   title: string;
@@ -29,7 +30,7 @@ export default function ListProduct({
         <span className="text-sm text-neutral-500">
           {created_at.toString()}
         </span>
-        <span className="text-lg">{price}</span>
+        <span className="text-lg">{formatToWon(price)}원</span>
       </div>
     </Link>
   );
