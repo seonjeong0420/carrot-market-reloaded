@@ -14,6 +14,9 @@ async function getProducts() {
       photo: true,
       id: true,
     },
+    orderBy: {
+      created_at: "desc",
+    },
   });
   return products;
 }
