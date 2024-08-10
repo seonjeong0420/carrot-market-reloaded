@@ -5,6 +5,7 @@ import React from "react";
 type Props = {};
 
 async function getProducts() {
+  await new Promise((resolve) => setTimeout(resolve, 2000));
   const products = await db.product.findMany({
     select: {
       title: true,
@@ -15,7 +16,6 @@ async function getProducts() {
     },
   });
   return products;
-  // await new Promise((resolve) => setTimeout(resolve, 10000));
 }
 
 const Products = async (props: Props) => {

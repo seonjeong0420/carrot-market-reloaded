@@ -23,7 +23,13 @@ export default function ListProduct({
         {/* layout shift를 방지하기 위해 width, height 속성 부여 또는 fill 속성 사용하기
          fill = object-fit:cover
         */}
-        <Image fill src={photo} alt={title} quality={100} />
+        <Image
+          fill
+          src={photo}
+          alt={title}
+          quality={100}
+          className="object-cover"
+        />
       </div>
       <div className="flex flex-col gap-1 *:text-white">
         <span className="text-lg">{title}</span>

@@ -47,7 +47,12 @@ const ProductDetail = async ({ params }: Props) => {
   return (
     <div>
       <div className="relative aspect-square">
-        <Image src={product.photo} alt={product.title} fill />
+        <Image
+          src={product.photo}
+          alt={product.title}
+          fill
+          className="object-cover"
+        />
       </div>
       <div className="p-5 flex items-center gap-3 border-b border-neutral-600">
         <div className="size-10 rounded-full overflow-hidden">
@@ -57,6 +62,7 @@ const ProductDetail = async ({ params }: Props) => {
               width={40}
               height={40}
               alt={product.user.username}
+              className="object-cover"
             />
           ) : (
             <UserIcon />
