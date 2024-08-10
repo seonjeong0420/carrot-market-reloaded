@@ -33,8 +33,8 @@
 - npm i prisma
 - npx prisma init
 
-1.  npx prisma migrate dev (-> add_user 작성 후 enter)
-2.  npx prisma studio
+  - npx prisma migrate dev (-> add_user 작성 후 enter)
+  - npx prisma studio
 
 - npm i bcrypt
   - 비밀번호를 hashing 할 수 있게 해주는 패키지
