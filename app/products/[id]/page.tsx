@@ -50,7 +50,7 @@ const ProductDetail = async ({ params }: Props) => {
         <Image src={product.photo} alt={product.title} fill />
       </div>
       <div className="p-5 flex items-center gap-3 border-b border-neutral-600">
-        <div className="size-10 rounded-full">
+        <div className="size-10 rounded-full overflow-hidden">
           {product.user.avatar !== null ? (
             <Image
               src={product.user.avatar}
