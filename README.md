@@ -127,6 +127,18 @@ const { pending } = useFormStatus();
 const [state, dispatch] = useFormState(FormAction, null);
 ```
 
+#### React Image 컴포넌트
+
+layout shift를 방지하기 위해 Image 컴포넌트를 사용하자.
+
+- width, height 속성 부여
+- fill 속성 사용하기 (=object-fit:cover)
+
+```bash
+<Image width={28} height={28} src={photo} alt={title} quality={100} />
+<Image fill src={photo} alt={title} quality={100} />
+```
+
 ### Zod
 
 object로 데이터를 검증할 경우, errors 결과를 fieldErrors로 받아올 수가 있다.
