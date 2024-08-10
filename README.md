@@ -222,6 +222,11 @@ export default db;
 
 ### MiddleWare
 
-- [NextJS 공식문서](https://nextjs.org/docs/pages/building-your-application/routing/middleware)
-  파일 위치 : /middleware.ts
-  page 바뀔 때 뿐만 아니라 브라우저가 css 파일을 다운로드 하거나 javascript, favicon 등 다운로드 할 때에도 실행된다.
+[NextJS 공식문서](https://nextjs.org/docs/pages/building-your-application/routing/middleware)
+middleware는 Edge runtime에 실행된다. (실제로는 Node.js에서 실행되지 않는다.)
+
+- Edge runtime : node.js API의 경량 버전.
+
+page 바뀔 때 뿐만 아니라 브라우저가 css 파일을 다운로드 하거나 javascript, favicon 등 다운로드 할 때에도 실행된다.
+
+- 파일 위치 : /middleware.ts
