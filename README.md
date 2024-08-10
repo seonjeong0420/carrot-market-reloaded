@@ -1,5 +1,10 @@
 # Carrot Market CloneCode
 
+📍 parenthess(괄호)를 사용한 folder naming은 URL에 전혀 영향이 없다.
+
+- () 안에 layout.tsx를 두면, 해당 폴더에서만 적용이 된다.
+  다시 말해, auth 폴더 안의 layout.tsx는 auth 폴더 내부에 있는 .tsx 파일에서만 layout이 적용된다.
+
 ## Tech
 
 - Next.js 14

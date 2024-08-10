@@ -19,6 +19,7 @@ model User {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt // 사용자의 수정이 있을 때마다 시간 저장
   SMSToken SMSToken[]
+  Product Product[]
 }
 
 // onDelete Cascade : 부모 model이 삭제되었을 때 자식 model도 자동으로 delete 할 수 있는 속성
@@ -29,4 +30,17 @@ model SMSToken {
   updated_at DateTime @updatedAt
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId Int
+}
+
+model Product {
+  id Int @id @default(autoincrement())
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
+  title String
+  price Float
+  description String
+  photo String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  
 }
