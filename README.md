@@ -219,3 +219,9 @@ export default db;
 
 **Password 해싱**
 해싱 : 기본적으로 유저가 보낸 비밀번호를 변환하는 것 (암호화, 단방향)
+
+### MiddleWare
+
+- [NextJS 공식문서](https://nextjs.org/docs/pages/building-your-application/routing/middleware)
+  파일 위치 : /middleware.ts
+  page 바뀔 때 뿐만 아니라 브라우저가 css 파일을 다운로드 하거나 javascript, favicon 등 다운로드 할 때에도 실행된다.
