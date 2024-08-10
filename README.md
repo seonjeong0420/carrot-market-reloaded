@@ -43,6 +43,8 @@
 
 ### NextJS
 
+- Intl API
+
 #### Server Action - api/route.ts
 
 - NextJS에게 route.ts 파일이 **API Route** 라고 알려준다.
