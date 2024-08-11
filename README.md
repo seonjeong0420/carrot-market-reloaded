@@ -151,6 +151,12 @@ layout shift를 방지하기 위해 Image 컴포넌트를 사용하자.
 쉽게 말해, 사용자가 링크를 클릭했을 때 해당 페이지에 도달하기 전 route를 intercept 해주는 방법
 (..) -> ../ 이런 식으로 상대경로를 의미
 
+#### Parallel Routes
+
+[Next 공식문서](https://nextjs.org/docs/app/building-your-application/routing/parallel-routes)
+
+- default.tsx 파일을 갖고 있어야 404에러가 발생ㄹ하지 않는다.
+
 ### Zod
 
 object로 데이터를 검증할 경우, errors 결과를 fieldErrors로 받아올 수가 있다.
