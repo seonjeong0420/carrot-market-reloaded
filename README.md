@@ -40,6 +40,9 @@
   - 비밀번호를 hashing 할 수 있게 해주는 패키지
 - npm i @types/bcrypt
 - npm i iron-session
+- npm i react-hook-form
+- npm i @hookform/resolvers
+  - Zod schema를 사용해서 form을 validation 할 수 있게 해주는 라이브러리
 
 ### NextJS
 

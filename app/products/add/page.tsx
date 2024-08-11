@@ -6,9 +6,22 @@ import Image from "next/image";
 import React, { ChangeEvent, useState } from "react";
 import { uploadProduct } from "./actions";
 import { useFormState } from "react-dom";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { productSchema, ProductType } from "./schema";
 
 const ProductAdd = () => {
   const [preview, setPreview] = useState("");
+  const [file, setFile] = useState<File | null>(null);
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm<ProductType>({
+    resolver: zodResolver(productSchema),
+  });
+
   const onImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     const {
       target: { files },
@@ -16,17 +29,33 @@ const ProductAdd = () => {
     if (!files) {
       return;
     }
-    console.log(files, files[0].type);
 
     const file = files[0];
     const url = URL.createObjectURL(file); // URL을 생성해주는 API
     setPreview(url);
+    setFile(file);
+    setValue("photo", url);
   };
 
-  const [state, action] = useFormState(uploadProduct, null);
+  const onSubmit = handleSubmit(async (data: ProductType) => {
+    if (!file) {
+      return;
+    }
+    const formData = new FormData();
+    formData.append("title", data.title);
+    formData.append("price", data.price + "");
+    formData.append("description", data.description);
+    formData.append("photo", data.photo);
+    return uploadProduct(formData);
+  });
+  // const [state, action] = useFormState(interceptAction, null);
+  const onValid = async () => {
+    await onSubmit();
+  };
+
   return (
     <div>
-      <form action={action} className="flex gap-5 flex-col p-5">
+      <form action={onValid} className="flex gap-5 flex-col p-5">
         <label
           htmlFor="photo"
           className="border-2 aspect-square flex items-center justify-center flex-col text-neutral-300 border-neutral-300 rounded-md border-dashed cursor-pointer bg-center bg-cover"
@@ -38,7 +67,7 @@ const ProductAdd = () => {
               <p className="text-neutral-400 text-sm">
                 사진을 추가해주세요.
                 <br />
-                {state?.fieldErrors.photo}
+                {errors.photo?.message}
               </p>
             </>
           )}
@@ -53,24 +82,24 @@ const ProductAdd = () => {
         />
         <Input
           type="text"
-          name="title"
           placeholder="제목"
           isRequired
-          errors={state?.fieldErrors.title}
+          {...register("title")}
+          errors={[errors.title?.message ?? ""]}
         />
         <Input
           type="number"
-          name="price"
           placeholder="가격"
           isRequired
-          errors={state?.fieldErrors.price}
+          {...register("price")}
+          errors={[errors.price?.message ?? ""]}
         />
         <Input
           type="text"
-          name="description"
           placeholder="자세한 설명"
           isRequired
-          errors={state?.fieldErrors.description}
+          {...register("description")}
+          errors={[errors.description?.message ?? ""]}
         />
         <button className="flex justify-center items-center w-full p-3 bg-orange-500 text-white">
           작성 완료
