@@ -144,6 +144,11 @@ layout shift를 방지하기 위해 Image 컴포넌트를 사용하자.
 <Image fill src={photo} alt={title} quality={100} />
 ```
 
+#### Intercepting Routes
+
+애플리케이션의 다른 부분에서 현재의 레이아웃으로 route를 불러올 수 있도록 도와주는 API
+(..) -> ../../ 이런 식으로 상대경로를 의미
+
 ### Zod
 
 object로 데이터를 검증할 경우, errors 결과를 fieldErrors로 받아올 수가 있다.
