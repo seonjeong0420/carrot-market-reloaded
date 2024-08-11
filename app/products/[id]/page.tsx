@@ -20,7 +20,7 @@ async function getIsOwner(userId: number) {
   return false;
 }
 
-async function getProduct(id: number) {
+export async function getProduct(id: number) {
   await new Promise((resolve) => setTimeout(resolve, 1000));
   const product = await db.product.findUnique({
     where: { id },
@@ -35,6 +35,14 @@ async function getProduct(id: number) {
   });
   return product;
 }
+export async function generateMetadata({ params }: { params: { id: string } }) {
+  const product = await getProduct(Number(params.id));
+
+  return {
+    title: product?.title,
+  };
+}
+
 const ProductDetail = async ({ params }: Props) => {
   const id = Number(params.id);
   const product = await getProduct(id);

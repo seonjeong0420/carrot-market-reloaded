@@ -66,7 +66,7 @@ const ProductList = ({ initialProducts }: ProductListProps) => {
       {products.map((product) => (
         <ListProduct key={product.id} {...product} />
       ))}
-      {!isLastPage && (
+      {/* {!isLastPage && (
         <span
           // style={{ marginTop: `${page + 1 * 300}vh` }}
           className="mb-96 text-sm font-semibold w-fit mx-auto px-3 py-2 rounded-md hover:opacity-90 active:scale-95"
@@ -83,7 +83,7 @@ const ProductList = ({ initialProducts }: ProductListProps) => {
         >
           {isLoading ? "로딩중" : "Load More"}
         </button>
-      )}
+      )} */}
     </div>
   );
 };

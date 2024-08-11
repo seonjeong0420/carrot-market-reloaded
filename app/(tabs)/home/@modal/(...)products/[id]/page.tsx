@@ -4,6 +4,7 @@ import Button from "@/components/button";
 import db from "@/lib/db";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import { getProduct } from "@/app/products/[id]/page";
 
 type Props = {
   params: {
@@ -11,26 +12,8 @@ type Props = {
   };
 };
 
-async function getProductsDetail(id: number) {
-  const product = await db.product.findUnique({
-    where: {
-      id,
-    },
-    include: {
-      user: {
-        select: {
-          avatar: true,
-          username: true,
-        },
-      },
-    },
-  });
-
-  return product;
-}
-
 const Modal = async ({ params }: Props) => {
-  const product = await getProductsDetail(Number(params.id));
+  const product = await getProduct(Number(params.id));
   if (!product) {
     return notFound();
   }
