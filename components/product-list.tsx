@@ -68,7 +68,7 @@ const ProductList = ({ initialProducts }: ProductListProps) => {
       ))}
       {!isLastPage && (
         <span
-          style={{ marginTop: `${page + 1 * 300}vh` }}
+          // style={{ marginTop: `${page + 1 * 300}vh` }}
           className="mb-96 text-sm font-semibold w-fit mx-auto px-3 py-2 rounded-md hover:opacity-90 active:scale-95"
           ref={trigger}
         >

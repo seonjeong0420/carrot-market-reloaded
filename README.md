@@ -155,7 +155,9 @@ layout shift를 방지하기 위해 Image 컴포넌트를 사용하자.
 
 [Next 공식문서](https://nextjs.org/docs/app/building-your-application/routing/parallel-routes)
 
-- default.tsx 파일을 갖고 있어야 404에러가 발생ㄹ하지 않는다.
+- default.tsx 파일을 갖고 있어야 404에러가 발생하지 않는다.
+- Link 컴포넌트의 링크 이동 시 오류가 없었는데, 새로고침하면 404 오류가 발생하는 이유?
+  - children 뿐만 아니라 parallel routes 정의한 파일도 렌더링 되기 때문
 
 ### Zod
 
