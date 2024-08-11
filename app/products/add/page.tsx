@@ -22,14 +22,13 @@ const ProductAdd = () => {
     resolver: zodResolver(productSchema),
   });
 
-  const onImageChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const onImageChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const {
       target: { files },
     } = event;
     if (!files) {
       return;
     }
-
     const file = files[0];
     const url = URL.createObjectURL(file); // URL을 생성해주는 API
     setPreview(url);
@@ -45,7 +44,8 @@ const ProductAdd = () => {
     formData.append("title", data.title);
     formData.append("price", data.price + "");
     formData.append("description", data.description);
-    formData.append("photo", data.photo);
+    formData.append("photo", file);
+
     return uploadProduct(formData);
   });
   // const [state, action] = useFormState(interceptAction, null);

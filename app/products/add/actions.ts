@@ -19,6 +19,7 @@ export async function uploadProduct(formData: FormData) {
       return;
     }
     const photoData = await data.photo.arrayBuffer();
+
     await fs.appendFile(`./public/${data.photo.name}`, Buffer.from(photoData)); // 로컬에 이미지 저장
     data.photo = `/${data.photo.name}`;
   }
