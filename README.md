@@ -148,6 +148,7 @@ layout shift를 방지하기 위해 Image 컴포넌트를 사용하자.
 
 [Next 공식문서](https://nextjs.org/docs/app/building-your-application/routing/intercepting-routes)
 애플리케이션의 다른 부분에서 현재의 레이아웃으로 route를 불러올 수 있도록 도와주는 API
+쉽게 말해, 사용자가 링크를 클릭했을 때 해당 페이지에 도달하기 전 route를 intercept 해주는 방법
 (..) -> ../ 이런 식으로 상대경로를 의미
 
 ### Zod
