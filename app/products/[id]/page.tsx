@@ -23,22 +23,28 @@ async function getIsOwner(userId: number) {
 
 export async function getProduct(id: number) {
   await new Promise((resolve) => setTimeout(resolve, 1000));
-  const product = await db.product.findUnique({
-    where: { id },
-    include: {
-      user: {
-        select: {
-          username: true,
-          avatar: true,
-        },
-      },
+  fetch("https://api.com", {
+    next: {
+      revalidate: 60,
+      tags: ["hello"],
     },
   });
-  return product;
+  // const product = await db.product.findUnique({
+  //   where: { id },
+  //   include: {
+  //     user: {
+  //       select: {
+  //         username: true,
+  //         avatar: true,
+  //       },
+  //     },
+  //   },
+  // });
+  // return product;
 }
 
 const getProductCached = nextCache(getProduct, ["product-detail"], {
-  tags: ["product-detail"],
+  tags: ["product-detail", "hello"],
 });
 
 export async function getProductTitle(id: number) {
