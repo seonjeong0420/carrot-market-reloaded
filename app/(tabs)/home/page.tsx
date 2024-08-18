@@ -3,7 +3,7 @@ import ProductList from "@/components/product-list";
 import db from "@/lib/db";
 import { PlusIcon } from "@heroicons/react/24/solid";
 import { Prisma } from "@prisma/client";
-import { unstable_cache as nextCache } from "next/cache";
+import { unstable_cache as nextCache, revalidatePath } from "next/cache";
 import Link from "next/link";
 import React from "react";
 
@@ -13,7 +13,7 @@ import React from "react";
  * 세번째 argument : revalidate = 함수가 호출된 후 60초가 지나지 않은 경우에 캐시 안에 있는 데이터 return
  */
 const getCachedProducts = nextCache(getInitialProducts, ["home-products"], {
-  revalidate: 60,
+  // revalidate: 60,
 });
 
 async function getInitialProducts() {
@@ -42,9 +42,18 @@ export type InitialProducts = Prisma.PromiseReturnType<
 
 const Products = async () => {
   const initialProducts = await getCachedProducts();
+
+  // '/home' 페이지의 cache 데이터를 최신화 할 수 있게 해주는 함수
+  const revalidate = async () => {
+    "use server";
+    revalidatePath("/home");
+  };
   return (
     <div className="p-5 flex flex-col gap-5">
       <ProductList initialProducts={initialProducts} />
+      <form action={revalidate}>
+        <button>Revalidate</button>
+      </form>
       <Link
         href="/products/add"
         className="bg-orange-500 items-center justify-center flex rounded-full size-10 fixed bottom-24 right-8 text-white transition-colors hover:bg-orange-400"
