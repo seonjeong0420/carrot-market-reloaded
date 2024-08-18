@@ -182,6 +182,10 @@ const data = unstable_cache(fetchData, keyParts, options)()
 2. revalidatePath
 3. revalidateTag
 
+#### Route Segment Config
+
+[Next 공식문서](https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config)
+
 ### Zod
 
 object로 데이터를 검증할 경우, errors 결과를 fieldErrors로 받아올 수가 있다.
