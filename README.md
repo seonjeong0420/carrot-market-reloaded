@@ -159,6 +159,13 @@ layout shift를 방지하기 위해 Image 컴포넌트를 사용하자.
 - Link 컴포넌트의 링크 이동 시 오류가 없었는데, 새로고침하면 404 오류가 발생하는 이유?
   - children 뿐만 아니라 parallel routes 정의한 파일도 렌더링 되기 때문
 
+#### unstable_cache
+
+[Next 공식문서](https://nextjs.org/docs/app/api-reference/functions/unstable_cache)
+
+- 데이터 fetch 가능
+- 가져온 데이터 모두 cache되어 NextJS의 메모리에 저장
+
 ### Zod
 
 object로 데이터를 검증할 경우, errors 결과를 fieldErrors로 받아올 수가 있다.
