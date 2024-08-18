@@ -2,6 +2,7 @@ import db from "@/lib/db";
 import getSession from "@/lib/session";
 import { formatToWon } from "@/lib/utils";
 import { UserIcon } from "@heroicons/react/24/solid";
+import { unstable_cache as nextCache, revalidateTag } from "next/cache";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -35,8 +36,27 @@ export async function getProduct(id: number) {
   });
   return product;
 }
+
+const getProductCached = nextCache(getProduct, ["product-detail"], {
+  tags: ["product-detail"],
+});
+
+export async function getProductTitle(id: number) {
+  const product = await db.product.findUnique({
+    where: { id },
+    select: {
+      title: true,
+    },
+  });
+  return product;
+}
+
+const getProductTitleCached = nextCache(getProductTitle, ["product-title"], {
+  tags: ["product-title"],
+});
+
 export async function generateMetadata({ params }: { params: { id: string } }) {
-  const product = await getProduct(Number(params.id));
+  const product = await getProductTitleCached(Number(params.id));
 
   return {
     title: product?.title,
@@ -45,12 +65,17 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
 
 const ProductDetail = async ({ params }: Props) => {
   const id = Number(params.id);
-  const product = await getProduct(id);
+  const product = await getProductCached(id);
   if (isNaN(id) || !product) {
     return notFound();
   }
 
   const isOwner = await getIsOwner(product.userId);
+
+  const revalidateTitle = async () => {
+    "use server";
+    revalidateTag("product-title");
+  };
 
   return (
     <div>
@@ -89,9 +114,11 @@ const ProductDetail = async ({ params }: Props) => {
           {formatToWon(product.price)}원
         </span>
         {isOwner && (
-          <button className="bg-red-500 px-5 py-2.5 rounded-md text-white font-semibold">
-            Delete product
-          </button>
+          <form action={revalidateTitle}>
+            <button className="bg-red-500 px-5 py-2.5 rounded-md text-white font-semibold">
+              Revalidate Title
+            </button>
+          </form>
         )}
         <Link
           href={"/"}

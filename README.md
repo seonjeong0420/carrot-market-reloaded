@@ -166,7 +166,17 @@ layout shift를 방지하기 위해 Image 컴포넌트를 사용하자.
 - 데이터 fetch 가능
 - 가져온 데이터 모두 cache되어 NextJS의 메모리에 저장
 
-[cache 사용 방법]
+```bash
+const data = unstable_cache(fetchData, keyParts, options)()
+```
+
+- fetchData : 비용이 많이 드는 계싼이나 데이터베이스 query를 가동시키는 함수
+- keyParts : 함수가 return하는 데이터를 cache 안에서 식별할 수 있게 해주는 것 (unique 한 값)
+- 세번째 argument(revalidate, tags)
+
+  - revalidate: 함수가 호출된 후 60초가 지나지 않은 경우에 캐시 안에 있는 데이터 return
+
+  [cache 사용 방법]
 
 1. revalidate
 2. revalidatePath
