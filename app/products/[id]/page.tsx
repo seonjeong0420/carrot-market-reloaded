@@ -7,6 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import React from "react";
+import { getProduct } from "../actions";
 
 type Props = {
   params: { id: string };
@@ -14,34 +15,18 @@ type Props = {
 
 // 사용자가 해당 상품 관리자인지 아닌지 check
 async function getIsOwner(userId: number) {
-  const session = await getSession();
-  if (session.id) {
-    return session.id === userId;
-  }
+  // const session = await getSession();
+  // if (session.id) {
+  //   return session.id === userId;
+  // }
   return false;
-}
-
-export async function getProduct(id: number) {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  const product = await db.product.findUnique({
-    where: { id },
-    include: {
-      user: {
-        select: {
-          username: true,
-          avatar: true,
-        },
-      },
-    },
-  });
-  return product;
 }
 
 const getProductCached = nextCache(getProduct, ["product-detail"], {
   tags: ["product-detail"],
 });
 
-export async function getProductTitle(id: number) {
+async function getProductTitle(id: number) {
   const product = await db.product.findUnique({
     where: { id },
     select: {
@@ -132,3 +117,16 @@ const ProductDetail = async ({ params }: Props) => {
 };
 
 export default ProductDetail;
+
+/**
+ * preRendering
+ * return은 문자열이어야 한다.
+ */
+export async function generateStaticParams() {
+  const products = await db.product.findMany({
+    select: {
+      id: true,
+    },
+  });
+  return products.map((products) => ({ id: products.id + "" }));
+}

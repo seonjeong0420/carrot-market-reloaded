@@ -4,7 +4,7 @@ import Button from "@/components/button";
 import db from "@/lib/db";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { getProduct } from "@/app/products/[id]/page";
+import { getProduct } from "@/app/products/actions";
 
 type Props = {
   params: {

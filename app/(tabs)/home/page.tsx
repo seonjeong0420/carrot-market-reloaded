@@ -45,8 +45,8 @@ export type InitialProducts = Prisma.PromiseReturnType<
  * - dynamic : refresh 할 때마다 동적으로 data fetch
  * - revalidate : unstable_cache의 revalidate와 동일한 기능
  */
-export const dynamic = "force-dynamic";
-export const revalidate = 60;
+// export const dynamic = "force-dynamic";
+// export const revalidate = 60;
 
 const Products = async () => {
   const initialProducts = await getCachedProducts();
