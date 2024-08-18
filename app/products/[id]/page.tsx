@@ -118,6 +118,8 @@ const ProductDetail = async ({ params }: Props) => {
 
 export default ProductDetail;
 
+export const dynamicParams = true; // 미리 생성되지 않는 페이지들은 dynamic 페이지로 간주 (default: true)
+
 /**
  * preRendering
  * return은 문자열이어야 한다.
