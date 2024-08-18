@@ -2,7 +2,8 @@ import db from "@/lib/db";
 import getSession from "@/lib/session";
 import { formatToTimeAgo } from "@/lib/utils";
 import { EyeIcon, HandThumbUpIcon } from "@heroicons/react/24/solid";
-import { revalidatePath } from "next/cache";
+import { HandThumbUpIcon as OutlineHandThumbUpIcon } from "@heroicons/react/24/outline";
+import { unstable_cache as nextCache, revalidateTag } from "next/cache";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import React from "react";
@@ -43,18 +44,40 @@ const getPost = async (id: number) => {
   }
 };
 
-const getIsLiked = async (postId: number) => {
-  const session = await getSession();
-  const like = await db.like.findUnique({
+const getCachedPost = nextCache(getPost, ["post-detail"], {
+  tags: ["post-detail"],
+  revalidate: 60,
+});
+
+const getLikedStatus = async (postId: number, userId: number) => {
+  const isLiked = await db.like.findUnique({
     where: {
       id: {
         postId,
-        userId: session.id!,
+        userId,
       },
     },
   });
-  return Boolean(like);
+  const likeCount = await db.like.count({
+    where: {
+      postId,
+    },
+  });
+
+  return {
+    likeCount,
+    isLiked: Boolean(isLiked),
+  };
 };
+
+async function getCachedLikeStatus(postId: number) {
+  const session = await getSession();
+  const cachedOperation = nextCache(getLikedStatus, ["product-like-status"], {
+    tags: [`like-status-${postId}`],
+  });
+
+  return cachedOperation(postId, session.id!);
+}
 
 const PostsDetail = async ({ params }: PostsDetailProps) => {
   const id = Number(params.id);
@@ -63,7 +86,7 @@ const PostsDetail = async ({ params }: PostsDetailProps) => {
     return notFound();
   }
 
-  const post = await getPost(id);
+  const post = await getCachedPost(id);
   if (!post) {
     return notFound();
   }
@@ -78,7 +101,8 @@ const PostsDetail = async ({ params }: PostsDetailProps) => {
           userId: session.id!,
         },
       });
-      revalidatePath(`/posts/${id}`);
+
+      revalidateTag(`like-status-${id}`);
     } catch (error) {
       alert("이미 좋아요를 눌렀습니다.");
     }
@@ -96,13 +120,14 @@ const PostsDetail = async ({ params }: PostsDetailProps) => {
           },
         },
       });
-      revalidatePath(`/posts/${id}`);
+
+      revalidateTag(`like-status-${id}`);
     } catch (error) {
       alert("이미 좋아요를 해제했습니다.");
     }
   };
 
-  const isLiked = await getIsLiked(id);
+  const { likeCount, isLiked } = await getCachedLikeStatus(id);
 
   return (
     <div className="p-5 text-white">
@@ -130,10 +155,21 @@ const PostsDetail = async ({ params }: PostsDetailProps) => {
         </div>
         <form action={isLiked ? dislikePost : likePost}>
           <button
-            className={`flex items-center gap-2 text-neutral-400 text-sm border border-neutral-400 rounded-full p-2 hover:bg-neutral-800 transition-colors`}
+            className={`flex items-center gap-2 text-neutral-400 text-sm border border-neutral-400 rounded-full p-2 hover:bg-neutral-800 transition-colors ${
+              isLiked ? "bg-orange-500 border-orange-500 text-white" : ""
+            }`}
           >
-            <HandThumbUpIcon className="size-5" />
-            <span>공감하기 ({post._count.likes})</span>
+            {isLiked ? (
+              <>
+                <HandThumbUpIcon className="size-5" />
+                <span>({likeCount})</span>
+              </>
+            ) : (
+              <>
+                <OutlineHandThumbUpIcon className="size-5" />
+                <span>공감하기 ({likeCount})</span>
+              </>
+            )}
           </button>
         </form>
       </div>
