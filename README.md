@@ -166,6 +166,12 @@ layout shift를 방지하기 위해 Image 컴포넌트를 사용하자.
 - 데이터 fetch 가능
 - 가져온 데이터 모두 cache되어 NextJS의 메모리에 저장
 
+[cache 사용 방법]
+
+1. revalidate
+2. revalidatePath
+3. revalidateTag
+
 ### Zod
 
 object로 데이터를 검증할 경우, errors 결과를 fieldErrors로 받아올 수가 있다.
