@@ -1,12 +1,13 @@
+import LikeButton from "@/components/like-button";
 import db from "@/lib/db";
 import getSession from "@/lib/session";
 import { formatToTimeAgo } from "@/lib/utils";
-import { EyeIcon, HandThumbUpIcon } from "@heroicons/react/24/solid";
-import { HandThumbUpIcon as OutlineHandThumbUpIcon } from "@heroicons/react/24/outline";
+import { EyeIcon } from "@heroicons/react/24/solid";
 import { unstable_cache as nextCache, revalidateTag } from "next/cache";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import React from "react";
+import { dislikePost, likePost } from "./actions";
 
 type PostsDetailProps = {
   params: { id: string };
@@ -91,42 +92,6 @@ const PostsDetail = async ({ params }: PostsDetailProps) => {
     return notFound();
   }
 
-  const likePost = async () => {
-    "use server";
-    const session = await getSession();
-    try {
-      await db.like.create({
-        data: {
-          postId: id,
-          userId: session.id!,
-        },
-      });
-
-      revalidateTag(`like-status-${id}`);
-    } catch (error) {
-      alert("이미 좋아요를 눌렀습니다.");
-    }
-  };
-
-  const dislikePost = async () => {
-    "use server";
-    const session = await getSession();
-    try {
-      await db.like.delete({
-        where: {
-          id: {
-            postId: id,
-            userId: session.id!,
-          },
-        },
-      });
-
-      revalidateTag(`like-status-${id}`);
-    } catch (error) {
-      alert("이미 좋아요를 해제했습니다.");
-    }
-  };
-
   const { likeCount, isLiked } = await getCachedLikeStatus(id);
 
   return (
@@ -153,25 +118,7 @@ const PostsDetail = async ({ params }: PostsDetailProps) => {
           <EyeIcon className="size-5" />
           <span>조회 {post.views}</span>
         </div>
-        <form action={isLiked ? dislikePost : likePost}>
-          <button
-            className={`flex items-center gap-2 text-neutral-400 text-sm border border-neutral-400 rounded-full p-2 hover:bg-neutral-800 transition-colors ${
-              isLiked ? "bg-orange-500 border-orange-500 text-white" : ""
-            }`}
-          >
-            {isLiked ? (
-              <>
-                <HandThumbUpIcon className="size-5" />
-                <span>({likeCount})</span>
-              </>
-            ) : (
-              <>
-                <OutlineHandThumbUpIcon className="size-5" />
-                <span>공감하기 ({likeCount})</span>
-              </>
-            )}
-          </button>
-        </form>
+        <LikeButton isLiked={isLiked} likeCount={likeCount} postId={id} />
       </div>
     </div>
   );

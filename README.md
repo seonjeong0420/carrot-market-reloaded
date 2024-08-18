@@ -186,6 +186,17 @@ const data = unstable_cache(fetchData, keyParts, options)()
 
 [Next 공식문서](https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config)
 
+#### useOptimistic Hook
+
+[React 공식문서](https://ko.react.dev/reference/react/useOptimistic)
+
+- UI를 낙관적(=유저에게 action 수행 결과를 즉시 보여주는 것을 의미)으로 업데이트할 수 있는 React Hook
+- 비동기 action이 진행되는 동안 다른 상태를 표시할 수 있는 React Hook
+
+```bash
+ const [optimisticState, addOptimistic] = useOptimistic(state, updateFn);
+```
+
 ### Zod
 
 object로 데이터를 검증할 경우, errors 결과를 fieldErrors로 받아올 수가 있다.
