@@ -32,7 +32,7 @@ export const metadata = {
   title: "동네생활",
 };
 
-const Life = async (props: Props) => {
+const Post = async (props: Props) => {
   const posts = await getPosts();
 
   return (
@@ -67,4 +67,4 @@ const Life = async (props: Props) => {
   );
 };
 
-export default Life;
+export default Post;
