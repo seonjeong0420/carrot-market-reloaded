@@ -1,5 +1,7 @@
+import ChatMessagesList from "@/components/chat-messages";
 import db from "@/lib/db";
 import getSession from "@/lib/session";
+import { Prisma } from "@prisma/client";
 import { notFound } from "next/navigation";
 import React from "react";
 
@@ -32,12 +34,40 @@ const getRoom = async (id: string) => {
   return room;
 };
 
+// 모든 메세지를 가져오는 함수
+const getMessages = async (chatRoomId: string) => {
+  const message = await db.message.findMany({
+    where: {
+      chatRoomId,
+    },
+    select: {
+      id: true,
+      payload: true,
+      created_at: true,
+      userId: true,
+      user: {
+        select: {
+          avatar: true,
+          username: true,
+        },
+      },
+    },
+  });
+
+  return message;
+};
+
+export type InitialChatMessage = Prisma.PromiseReturnType<typeof getMessages>;
 const ChatRoom = async ({ params }: Props) => {
-  const room = await getRoom(params.id);
+  const room = await getRoom(params.id); // 채팅 데이터 불러오기
   if (!room) {
     return notFound();
   }
-  return <div>chat !! </div>;
+
+  const initialMessages = await getMessages(params.id);
+  const session = await getSession();
+
+  return <ChatMessagesList userId={session.id!} initialMessages={initialMessages} />;
 };
 
 export default ChatRoom;
