@@ -1,9 +1,9 @@
 "use client";
 
 import { InitialChatMessage } from "@/app/chats/[id]/page";
-import React, { useState } from "react";
+import React, { ChangeEvent, FormEvent, useState } from "react";
 import Image from "next/image";
-import { UserIcon } from "@heroicons/react/24/solid";
+import { ArrowUpCircleIcon, UserIcon } from "@heroicons/react/24/solid";
 import { formatToTimeAgo } from "@/lib/utils";
 
 interface ChatMessageListProps {
@@ -13,6 +13,31 @@ interface ChatMessageListProps {
 
 const ChatMessagesList = ({ initialMessages, userId }: ChatMessageListProps) => {
   const [messages, setMessages] = useState(initialMessages);
+  const [inputMsg, setInputMsg] = useState("");
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setInputMsg(event.target.value);
+  };
+
+  const handleSubmit = async (event: FormEvent) => {
+    event.preventDefault();
+
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: Date.now(),
+        payload: inputMsg,
+        created_at: new Date(),
+        userId,
+        user: {
+          username: "string",
+          avatar: "xxx",
+        },
+      },
+    ]);
+
+    setInputMsg("");
+  };
 
   return (
     <div className="p-5 flex flex-col gap-5 min-h-screen justify-end">
@@ -36,6 +61,21 @@ const ChatMessagesList = ({ initialMessages, userId }: ChatMessageListProps) => 
           </div>
         </div>
       ))}
+
+      <form className="flex relative" onSubmit={handleSubmit}>
+        <input
+          type="text"
+          value={inputMsg}
+          name="inputMsg"
+          className="bg-transparent rounded-full w-full h-10 focus:outline-none px-5 ring-2 focus:ring-4 transition ring-neutral-200 focus:ring-neutral-50 border-none placeholder:text-neutral-400"
+          onChange={handleChange}
+          placeholder="write a message"
+          required
+        />
+        <button className="absolute right-0">
+          <ArrowUpCircleIcon className="size-10 text-orange-500 transition-colors hover:text-orange-300" />
+        </button>
+      </form>
     </div>
   );
 };
