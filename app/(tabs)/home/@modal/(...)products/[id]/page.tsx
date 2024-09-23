@@ -25,26 +25,11 @@ const Modal = async ({ params }: Props) => {
       </Button>
       <div className="max-w-screen-sm flex flex-col justify-center w-full h-1/2">
         <div className="relative aspect-square bg-neutral-700 rounded-md flex justify-center items-center text-neutral-200">
-          <Image
-            src={product.photo}
-            alt={product.title}
-            fill
-            className="object-cover"
-          />
+          <Image src={product.photo} alt={product.title} fill className="object-cover" />
         </div>
         <div className="flex gap-3 items-center p-5 border-b border-neutral-600">
           <div className="size-10 rounded-full overflow-hidden">
-            {product.user.avatar !== null ? (
-              <Image
-                src={product.user.avatar}
-                width={40}
-                height={40}
-                alt={product.user.username}
-                className="object-cover"
-              />
-            ) : (
-              <UserIcon />
-            )}
+            {product.user.avatar !== null ? <Image src={product.user.avatar} width={40} height={40} alt={product.user.username} className="object-cover" /> : <UserIcon />}
           </div>
           <h3>{product.user.username}</h3>
         </div>

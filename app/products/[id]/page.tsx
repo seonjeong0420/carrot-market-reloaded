@@ -65,26 +65,11 @@ const ProductDetail = async ({ params }: Props) => {
   return (
     <div>
       <div className="relative aspect-square">
-        <Image
-          src={product.photo}
-          alt={product.title}
-          fill
-          className="object-cover"
-        />
+        <Image src={product.photo} alt={product.title} fill className="object-cover" />
       </div>
       <div className="p-5 flex items-center gap-3 border-b border-neutral-600">
         <div className="size-10 rounded-full overflow-hidden">
-          {product.user.avatar !== null ? (
-            <Image
-              src={product.user.avatar}
-              width={40}
-              height={40}
-              alt={product.user.username}
-              className="object-cover"
-            />
-          ) : (
-            <UserIcon />
-          )}
+          {product.user.avatar !== null ? <Image src={product.user.avatar} width={40} height={40} alt={product.user.username} className="object-cover" /> : <UserIcon />}
         </div>
         <div>
           <h3>{product.user.username}</h3>
@@ -95,20 +80,13 @@ const ProductDetail = async ({ params }: Props) => {
         <p>{product.description}</p>
       </div>
       <div className="fixed w-full bottom-0 left-0 p-5 pb-10 bg-neutral-800 flex justify-between items-center">
-        <span className="font-semibold text-lg ">
-          {formatToWon(product.price)}원
-        </span>
+        <span className="font-semibold text-lg ">{formatToWon(product.price)}원</span>
         {isOwner && (
           <form action={revalidateTitle}>
-            <button className="bg-red-500 px-5 py-2.5 rounded-md text-white font-semibold">
-              Revalidate Title
-            </button>
+            <button className="bg-red-500 px-5 py-2.5 rounded-md text-white font-semibold">Revalidate Title</button>
           </form>
         )}
-        <Link
-          href={"/"}
-          className="bg-orange-500 px-5 py-2.5 rounded-md text-white font-semibold"
-        >
+        <Link href={"/"} className="bg-orange-500 px-5 py-2.5 rounded-md text-white font-semibold">
           채팅하기
         </Link>
       </div>
