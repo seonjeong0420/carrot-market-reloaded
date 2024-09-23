@@ -6,6 +6,7 @@ import Image from "next/image";
 import { ArrowUpCircleIcon, UserIcon } from "@heroicons/react/24/solid";
 import { formatToTimeAgo } from "@/lib/utils";
 import { createClient, RealtimeChannel } from "@supabase/supabase-js";
+import db from "@/lib/db";
 
 const SUPABASE_PUBLIC_KEY =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpoanR4YWFqdXRnY3NsZ2JzeXJsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjcwNzc1MzUsImV4cCI6MjA0MjY1MzUzNX0.3jXBJNI8AxZiIxYOpHMuUGsuSG_6w31n4UeCON2qcCE"; // supabase > project settings > API > Project API keys (public)
@@ -13,10 +14,12 @@ const SUPABASE_URL = "https://jhjtxaajutgcslgbsyrl.supabase.co"; // supabase > p
 interface ChatMessageListProps {
   initialMessages: InitialChatMessage;
   userId: number;
+  username: string;
+  avatar: string;
   chatRoomId: string;
 }
 
-const ChatMessagesList = ({ initialMessages, userId, chatRoomId }: ChatMessageListProps) => {
+const ChatMessagesList = ({ initialMessages, userId, username, avatar, chatRoomId }: ChatMessageListProps) => {
   const [messages, setMessages] = useState(initialMessages);
   const [inputMsg, setInputMsg] = useState("");
   const channel = useRef<RealtimeChannel>(); // 컴포넌트 내의 여러 함수 간의 데이터를 공유할 수 있도록 해준다. (재렌더링을 트리거 하지 않고, 렌더링이 발생한다면 해당 데이터는 유지)
@@ -36,15 +39,15 @@ const ChatMessagesList = ({ initialMessages, userId, chatRoomId }: ChatMessageLi
         created_at: new Date(),
         userId,
         user: {
-          username: "string",
-          avatar: "xxx",
+          username,
+          avatar,
         },
       },
     ]);
     channel.current?.send({
       type: "broadcast",
       event: "message",
-      payload: { message: inputMsg },
+      payload: { id: Date.now(), created_at: new Date(), payload: inputMsg, userId, user: { username, avatar } },
     });
     setInputMsg("");
   };
@@ -53,8 +56,8 @@ const ChatMessagesList = ({ initialMessages, userId, chatRoomId }: ChatMessageLi
     const client = createClient(SUPABASE_URL, SUPABASE_PUBLIC_KEY);
     channel.current = client.channel(`room-${chatRoomId}`); // channel의 고유한 이름 지정하기
     channel.current
-      .on("broadcast", { event: "message" }, (paylaod) => {
-        console.log(paylaod);
+      .on("broadcast", { event: "message" }, (payload) => {
+        setMessages((prevMsg) => [...prevMsg, payload.payload]);
       })
       .subscribe();
 

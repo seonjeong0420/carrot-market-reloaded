@@ -57,6 +57,21 @@ const getMessages = async (chatRoomId: string) => {
   return message;
 };
 
+const getUserProfile = async () => {
+  const session = await getSession();
+  const user = await db.user.findUnique({
+    where: {
+      id: session.id,
+    },
+    select: {
+      username: true,
+      avatar: true,
+    },
+  });
+
+  return user;
+};
+
 export type InitialChatMessage = Prisma.PromiseReturnType<typeof getMessages>;
 const ChatRoom = async ({ params }: Props) => {
   const room = await getRoom(params.id); // 채팅 데이터 불러오기
@@ -66,8 +81,13 @@ const ChatRoom = async ({ params }: Props) => {
 
   const initialMessages = await getMessages(params.id);
   const session = await getSession();
+  const userInfo = await getUserProfile();
 
-  return <ChatMessagesList chatRoomId={params.id} userId={session.id!} initialMessages={initialMessages} />;
+  if (!userInfo) {
+    return notFound();
+  }
+
+  return <ChatMessagesList chatRoomId={params.id} userId={session.id!} username={userInfo.username} avatar={userInfo.avatar!} initialMessages={initialMessages} />;
 };
 
 export default ChatRoom;
