@@ -5,7 +5,7 @@ import { UserIcon } from "@heroicons/react/24/solid";
 import { unstable_cache as nextCache, revalidateTag } from "next/cache";
 import Image from "next/image";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import React from "react";
 import { getProduct } from "../actions";
 
@@ -62,6 +62,29 @@ const ProductDetail = async ({ params }: Props) => {
     revalidateTag("product-title");
   };
 
+  const createChatRoom = async () => {
+    "use server";
+    const session = await getSession();
+    const room = await db.chatRoom.create({
+      data: {
+        users: {
+          connect: [
+            {
+              id: product.userId,
+            },
+            {
+              id: session.id,
+            },
+          ],
+        },
+      },
+      select: {
+        id: true,
+      },
+    });
+    redirect(`/chats/${room.id}`);
+  };
+
   return (
     <div>
       <div className="relative aspect-square">
@@ -86,9 +109,9 @@ const ProductDetail = async ({ params }: Props) => {
             <button className="bg-red-500 px-5 py-2.5 rounded-md text-white font-semibold">Revalidate Title</button>
           </form>
         )}
-        <Link href={"/"} className="bg-orange-500 px-5 py-2.5 rounded-md text-white font-semibold">
-          채팅하기
-        </Link>
+        <form action={createChatRoom}>
+          <button className="bg-orange-500 px-5 py-2.5 rounded-md text-white font-semibold">채팅하기</button>
+        </form>
       </div>
     </div>
   );
