@@ -7,6 +7,7 @@ import { ArrowUpCircleIcon, UserIcon } from "@heroicons/react/24/solid";
 import { formatToTimeAgo } from "@/lib/utils";
 import { createClient, RealtimeChannel } from "@supabase/supabase-js";
 import db from "@/lib/db";
+import { saveChatMessage } from "@/app/chats/[id]/actions";
 
 const SUPABASE_PUBLIC_KEY =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpoanR4YWFqdXRnY3NsZ2JzeXJsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjcwNzc1MzUsImV4cCI6MjA0MjY1MzUzNX0.3jXBJNI8AxZiIxYOpHMuUGsuSG_6w31n4UeCON2qcCE"; // supabase > project settings > API > Project API keys (public)
@@ -49,6 +50,9 @@ const ChatMessagesList = ({ initialMessages, userId, username, avatar, chatRoomI
       event: "message",
       payload: { id: Date.now(), created_at: new Date(), payload: inputMsg, userId, user: { username, avatar } },
     });
+
+    await saveChatMessage(inputMsg, chatRoomId);
+
     setInputMsg("");
   };
 
