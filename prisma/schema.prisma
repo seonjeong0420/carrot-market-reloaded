@@ -23,6 +23,8 @@ model User {
   posts Post[]
   comments Comment[]
   likes Like[]
+  chat_rooms ChatRoom[]
+  messages Message[]
 }
 
 // onDelete Cascade : 부모 model이 삭제되었을 때 자식 model도 자동으로 delete 할 수 있는 속성
@@ -80,4 +82,26 @@ model Like {
   post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
   userId Int
   postId Int
+}
+
+model ChatRoom {
+  id String @id @default(cuid()) // 암호화 된 id값 부여 가능
+  users User[]
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  message Message[]
+}
+
+model Message {
+  id Int @id @default(autoincrement())
+  payload String
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  room ChatRoom @relation(fields: [chatRoomId], references: [id])
+  user User @relation(fields: [userId], references: [id])
+  chatRoomId String
+  userId Int
 }
