@@ -67,7 +67,7 @@ const ChatRoom = async ({ params }: Props) => {
   const initialMessages = await getMessages(params.id);
   const session = await getSession();
 
-  return <ChatMessagesList userId={session.id!} initialMessages={initialMessages} />;
+  return <ChatMessagesList chatRoomId={params.id} userId={session.id!} initialMessages={initialMessages} />;
 };
 
 export default ChatRoom;

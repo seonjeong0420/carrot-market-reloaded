@@ -13,6 +13,10 @@
   - .env 파일을 .gitignore에 넣는게 가장 중요하다
 - Zod
   - coerce(=강제) : user가 입력한 string을 number로 변환을 시도
+- Supabse (github 연동)
+  - 실시간 데이터 처리 (백엔드 서비스 플랫폼)
+  - 데이터베이스와 API 구축하는데 필요한 설정과 관리를 최소화 할 수 있다. (PostgreSQL 기반)
+  - 인증, 보안, 실시간 업데이트 및 스케일링과 같은 백엔드 기능 제공
 
 ## VSCode 확장 프로그램
 
@@ -42,7 +46,10 @@
 - npm i iron-session
 - npm i react-hook-form
 - npm i @hookform/resolvers
+
   - Zod schema를 사용해서 form을 validation 할 수 있게 해주는 라이브러리
+
+- npm i @supabase/supabase-js
 
 ### NextJS
 
@@ -251,7 +258,7 @@ model User {
   password String? // sms으로 로그인 할 수도 있기 때문에 선택값
   phone String? @unique
   github_id String? @unique
-  avatar String? @default("http://dkdkdkdkdk.com/dldl.jpg")
+  avatar String?
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt // 사용자의 수정이 있을 때마다 시간 저장
 }
