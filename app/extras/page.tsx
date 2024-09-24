@@ -1,5 +1,5 @@
 import { revalidatePath } from "next/cache";
-import React, { experimental_taintObjectReference } from "react";
+import React, { experimental_taintObjectReference, experimental_taintUniqueValue } from "react";
 import HackedComponent from "./hacked-component";
 
 const getData = async () => {
@@ -9,7 +9,9 @@ const getData = async () => {
     secret: "0022030",
   };
 
-  experimental_taintObjectReference("API keys were leaked !! ", keys);
+  // experimental_taintObjectReference("API keys were leaked !! ", keys); // object 전체를 taint 할 수 있다.
+  experimental_taintUniqueValue("Error! Secret key was exposed", keys, keys.secret); // object 내의 고유한 값만을 taint 할 수 있다.
+
   return keys;
 };
 

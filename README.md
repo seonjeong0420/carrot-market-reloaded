@@ -50,6 +50,7 @@
   - Zod schema를 사용해서 form을 validation 할 수 있게 해주는 라이브러리
 
 - npm i @supabase/supabase-js
+- npm install server-only // 파일 전체 보호
 
 ### NextJS
 
