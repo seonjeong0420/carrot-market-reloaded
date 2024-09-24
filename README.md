@@ -316,3 +316,9 @@ page 바뀔 때 뿐만 아니라 브라우저가 css 파일을 다운로드 하�
 ### cloudflare
 
 - streaming 은 유료 버전이라 #16 LIVE STREAMING 강의는 클론 코딩 하지 못함.
+
+## Next.js Extra 기능
+
+- Private Folders
+  - 폴더 네임 앞에 \_ 붙이면 비공개로 바뀐다.
+  - page.tsx, loading.tsx, error.tsx, route.tsx 같은 파일을 사용할 때는 조심하자.
