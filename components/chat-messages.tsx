@@ -6,7 +6,6 @@ import Image from "next/image";
 import { ArrowUpCircleIcon, UserIcon } from "@heroicons/react/24/solid";
 import { formatToTimeAgo } from "@/lib/utils";
 import { createClient, RealtimeChannel } from "@supabase/supabase-js";
-import db from "@/lib/db";
 import { saveChatMessage } from "@/app/chats/[id]/actions";
 
 const SUPABASE_PUBLIC_KEY =
@@ -18,9 +17,10 @@ interface ChatMessageListProps {
   username: string;
   avatar: string;
   chatRoomId: string;
+  readMsg: (msgId: number) => void;
 }
 
-const ChatMessagesList = ({ initialMessages, userId, username, avatar, chatRoomId }: ChatMessageListProps) => {
+const ChatMessagesList = ({ initialMessages, userId, username, avatar, chatRoomId, readMsg }: ChatMessageListProps) => {
   const [messages, setMessages] = useState(initialMessages);
   const [inputMsg, setInputMsg] = useState("");
   const channel = useRef<RealtimeChannel>(); // 컴포넌트 내의 여러 함수 간의 데이터를 공유할 수 있도록 해준다. (재렌더링을 트리거 하지 않고, 렌더링이 발생한다면 해당 데이터는 유지)
@@ -38,6 +38,7 @@ const ChatMessagesList = ({ initialMessages, userId, username, avatar, chatRoomI
         id: Date.now(),
         payload: inputMsg,
         created_at: new Date(),
+        isRead: false,
         userId,
         user: {
           username,
@@ -48,7 +49,7 @@ const ChatMessagesList = ({ initialMessages, userId, username, avatar, chatRoomI
     channel.current?.send({
       type: "broadcast",
       event: "message",
-      payload: { id: Date.now(), created_at: new Date(), payload: inputMsg, userId, user: { username, avatar } },
+      payload: { id: Date.now(), created_at: new Date(), payload: inputMsg, isRead: false, userId, user: { username, avatar } },
     });
 
     await saveChatMessage(inputMsg, chatRoomId);
@@ -61,6 +62,7 @@ const ChatMessagesList = ({ initialMessages, userId, username, avatar, chatRoomI
     channel.current = client.channel(`room-${chatRoomId}`); // channel의 고유한 이름 지정하기
     channel.current
       .on("broadcast", { event: "message" }, (payload) => {
+        readMsg(messages[messages.length - 1].id);
         setMessages((prevMsg) => [...prevMsg, payload.payload]);
       })
       .subscribe();

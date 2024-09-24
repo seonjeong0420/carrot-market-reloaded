@@ -1,20 +1,14 @@
 "use server";
 import { z } from "zod";
 import bcrypt from "bcrypt";
-import {
-  PASSWORD_MIN_LENNGTH,
-  PASSWORD_REGEX,
-  PASSWORD_REGEX_ERROR,
-} from "@/lib/constans";
+import { PASSWORD_MIN_LENNGTH, PASSWORD_REGEX, PASSWORD_REGEX_ERROR } from "@/lib/constans";
 import db from "@/lib/db";
 import { getIronSession } from "iron-session";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import getSession from "@/lib/session";
 
-const passwordRegex = new RegExp(
-  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*?[#?!@$%^&*-]).+$/
-);
+const passwordRegex = new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*?[#?!@$%^&*-]).+$/);
 
 // username validation check
 const checkUsername = async (username: string) => {
@@ -53,13 +47,7 @@ const checkUsername = async (username: string) => {
 // };
 
 // password, confirmPW 같은지 check
-const checkPassword = ({
-  password,
-  confirmPW,
-}: {
-  password: string;
-  confirmPW: string;
-}) => {
+const checkPassword = ({ password, confirmPW }: { password: string; confirmPW: string }) => {
   return password === confirmPW;
 };
 
@@ -74,7 +62,7 @@ const formSchema = z
       })
       .toLowerCase()
       .trim()
-      .transform((username) => `🔥${username}🔥`) // transform은 무조건 return이 있어야 한다.
+      .transform((username) => `${username}`) // transform은 무조건 return이 있어야 한다.
       .refine(checkUsername, "no tomato alllowed."),
     // .refine(checkUniqueUsername, "This uername is already taken"),
     email: z.string().email(),
@@ -82,10 +70,7 @@ const formSchema = z
     //   checkUniqueEmail,
     //   "There is an account already registered with that email"
     // ),
-    password: z
-      .string()
-      .min(PASSWORD_MIN_LENNGTH)
-      .regex(PASSWORD_REGEX, PASSWORD_REGEX_ERROR),
+    password: z.string().min(PASSWORD_MIN_LENNGTH).regex(PASSWORD_REGEX, PASSWORD_REGEX_ERROR),
     confirmPW: z.string().min(PASSWORD_MIN_LENNGTH),
   })
   .superRefine(async ({ username }, ctx) => {

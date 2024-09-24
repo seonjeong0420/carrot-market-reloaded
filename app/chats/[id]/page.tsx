@@ -45,6 +45,7 @@ const getMessages = async (chatRoomId: string) => {
       payload: true,
       created_at: true,
       userId: true,
+      isRead: true,
       user: {
         select: {
           avatar: true,
@@ -82,12 +83,27 @@ const ChatRoom = async ({ params }: Props) => {
   const initialMessages = await getMessages(params.id);
   const session = await getSession();
   const userInfo = await getUserProfile();
+  const readMsg = async (msgId: number) => {
+    "use server";
+    await db.message.update({
+      where: {
+        id: msgId,
+      },
+      data: {
+        isRead: true,
+      },
+    });
+  };
+
+  if (initialMessages.length > 0 && initialMessages[initialMessages.length - 1].userId !== session.id && !initialMessages[initialMessages.length - 1].isRead) {
+    readMsg(initialMessages[initialMessages.length - 1].id);
+  }
 
   if (!userInfo) {
     return notFound();
   }
 
-  return <ChatMessagesList chatRoomId={params.id} userId={session.id!} username={userInfo.username} avatar={userInfo.avatar!} initialMessages={initialMessages} />;
+  return <ChatMessagesList chatRoomId={params.id} userId={session.id!} username={userInfo.username} avatar={userInfo.avatar!} initialMessages={initialMessages} readMsg={readMsg} />;
 };
 
 export default ChatRoom;
