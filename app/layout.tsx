@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import localFont from "next/font/local";
 import { Roboto, Rubik_Scribble } from "next/font/google";
 import "./globals.css";
 
@@ -16,6 +17,11 @@ const rubik = Rubik_Scribble({
   variable: "--rubik-text",
 });
 
+const metallica = localFont({
+  src: "./metallica.ttf",
+  variable: "--metallica-text",
+});
+
 export const metadata: Metadata = {
   title: {
     template: "%s | Karrot Market",
@@ -31,7 +37,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${roboto.variable} ${rubik.variable} bg-neutral-900 text-white max-w-screen-sm mx-auto`}>{children}</body>
+      <body className={`${roboto.variable} ${rubik.variable} ${metallica.variable} bg-neutral-900 text-white max-w-screen-sm mx-auto`}>{children}</body>
     </html>
   );
 }

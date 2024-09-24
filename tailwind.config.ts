@@ -7,6 +7,7 @@ const config: Config = {
       fontFamily: {
         roboto: "var(--roboto-text)",
         rubik: "var(--rubik-text)",
+        metallica: "var(--metallica-text)",
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
