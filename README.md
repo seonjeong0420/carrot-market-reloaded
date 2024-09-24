@@ -312,3 +312,7 @@ middleware는 Edge runtime에 실행된다. (실제로는 Node.js에서 실행�
 page 바뀔 때 뿐만 아니라 브라우저가 css 파일을 다운로드 하거나 javascript, favicon 등 다운로드 할 때에도 실행된다.
 
 - 파일 위치 : /middleware.ts
+
+### cloudflare
+
+- streaming 은 유료 버전이라 #16 LIVE STREAMING 강의는 클론 코딩 하지 못함.
