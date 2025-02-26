@@ -3,11 +3,11 @@ import db from "@/lib/db";
 import getSession from "@/lib/session";
 import { formatToTimeAgo } from "@/lib/utils";
 import { EyeIcon } from "@heroicons/react/24/solid";
-import { unstable_cache as nextCache, revalidateTag } from "next/cache";
+import { unstable_cache as nextCache } from "next/cache";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import React from "react";
-import { dislikePost, likePost } from "./actions";
+import Comments from "./comments";
 
 type PostsDetailProps = {
   params: { id: string };
@@ -35,6 +35,20 @@ const getPost = async (id: number) => {
           select: {
             comments: true,
             likes: true,
+          },
+        },
+        comments: {
+          select: {
+            id: true,
+            payload: true,
+            created_at: true,
+            userId: true,
+            user: {
+              select: {
+                username: true,
+                avatar: true,
+              },
+            },
           },
         },
       },
@@ -120,6 +134,7 @@ const PostsDetail = async ({ params }: PostsDetailProps) => {
         </div>
         <LikeButton isLiked={isLiked} likeCount={likeCount} postId={id} />
       </div>
+      <Comments postId={id} comments={post.comments} />
     </div>
   );
 };
