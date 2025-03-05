@@ -28,9 +28,20 @@ const Profile = async (props: Props) => {
     await session.destroy();
     redirect("/");
   };
+  const handleUpdate = async () => {
+    "use server";
+  };
   return (
     <div>
       <h1>Welcome! {user?.username} ❤️</h1>
+      <ul>
+        <li>avatar : {user.avatar}</li>
+        <li>email: {user.email}</li>
+        <li>phone: {user.phone}</li>
+      </ul>
+      <form action={handleUpdate}>
+        <button>Update</button>
+      </form>
       <form action={handleLogout}>
         <button>LogOut</button>
       </form>

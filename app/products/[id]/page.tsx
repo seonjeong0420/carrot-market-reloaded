@@ -15,10 +15,10 @@ type Props = {
 
 // 사용자가 해당 상품 관리자인지 아닌지 check
 async function getIsOwner(userId: number) {
-  // const session = await getSession();
-  // if (session.id) {
-  //   return session.id === userId;
-  // }
+  const session = await getSession();
+  if (session.id) {
+    return session.id === userId;
+  }
   return false;
 }
 

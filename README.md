@@ -323,3 +323,8 @@ page 바뀔 때 뿐만 아니라 브라우저가 css 파일을 다운로드 하�
 - Private Folders
   - 폴더 네임 앞에 \_ 붙이면 비공개로 바뀐다.
   - page.tsx, loading.tsx, error.tsx, route.tsx 같은 파일을 사용할 때는 조심하자.
+
+### .env 파일 내용
+
+DATABASE_URL="file:./database.db"
+COOKIE_PASSWORD="complex_password_at_least_32_characters_long"
